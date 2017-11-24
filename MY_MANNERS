@@ -1,0 +1,17 @@
+MY_MANNERS:
+
+Funções:
+
+	stuf;		// função auxiliar ao raciocinio;
+				// recebe variaveis como something, stufy_stuf, ..., ou com +/- o mesmo nome da variavel que espera receber;
+
+Variaveis:
+
+	pass;		// variavel que não é parte do reciocinio principal:
+			// uso para getchar de um ENTER, ou mara manter valores em mudanças de valores de outras variaveis, ou para representar valors sem significado;
+
+	thingy;		// uso para representar variaveis do tipo int e char que mantenham um raciocinio ao longo da função
+				//	padrão: thingi_1, thingi_2, ...
+
+	etc;		// uso para ciclos e vetores/strings
+				//	padrão: etc, etc_etc, ...
