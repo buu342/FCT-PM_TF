@@ -3,6 +3,8 @@
         Used for selecting which functions to execute
 --------------------------------------------------------------*/
 
+#include <menu.h>
+
 int menu()
 {
     int o;
