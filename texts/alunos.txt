@@ -1,0 +1,215 @@
+22468	Hugo Miguel Machado Barata
+28437	Goncalo Manuel Rasteiro de Araujo
+30162	Adalmiro Pires Amado Abreu
+37161	Bernardo Miguel Monteiro de Lima
+40451	Tiago Andre Henriques Vieira
+41035	Bruno Jose Palma Lameira
+41474	Sara Cunha Madeira
+43827	Vasco Rosa Jorge de Jesus
+43950	Antonio Miguel Vidigal Goncalves Mendes
+44609	Tiago Firmino da Silva
+44641	Alda Maria Ernesto Lisboa
+45583	Eduardo Manuel Santos Ferreira Aivado
+46147	Ricardo Jorge Rodrigues Sequeira
+46163	Duarte Nuno Nogueira Almeirao
+46442	Miguel Andre Vieira Ziobrowski
+47623	Bernardo Fundao Veloso
+47842	Claudio Alexandre Boaventura Mendes
+47908	Francisco Eduardo Moura Amaral
+48241	Sergio Miguel Dionisio Espada
+48583	Guilherme Sanches Alves de Jesus Marques
+48697	Marcio Junior de Jesus Teixeira Veiga
+48707	Elvis Lenine Pereira Mendes
+49482	Manuel de Bonaparte Almeida Ferreira
+49541	Nikita Jurievitch Dyskin
+49922	Sandro Miguel Ferreira Costa
+49933	Filipa Lopes Correia Salgado dos Santos
+49999	David Miguel Amaro Rodrigues da Trindade
+50006	Serafim Ciobanu
+50007	Pedro Ferreira de Sousa
+50069	Lourenco Paiva Raposo Farrusco Meess
+50073	Goncalo Reis Brito
+50228	Duarte Nuno Do Couto Zagallo de Sousa Ferreira
+50290	Eduardo Jorge Correia Pedroso
+50432	Joao Pereira Cabacinho
+50491	Afonso de Cintra Mauricio Goncalves
+50525	Joao Jose Valente Coelho Tome
+50527	Guilherme Casanova Fernandes Roque dos Santos
+50584	Francisco Miguel Silva Ferreira
+50606	Filipe Jorge da Conceicao Martins
+50726	Francisco Mendes Micaelo Andre
+50758	Pedro Pinto Guedes Nave Ferreira
+50904	Ana Catarina Vieira Romao
+50930	Edmilson Carlos Semedo Goncalves
+51127	Marcelo Vicente Soares
+51218	Tiago Miguel Pina Fortes
+51789	Ana Rita Dias da Silva
+51876	Alexandre Piedade Moreira de Moura Ildefonso
+51888	David Jose Costa Sousa
+51890	Patricia Alexandra Goncalves Rodrigues
+51947	Manuel Maria Contreras Garcia Conde Martins
+51951	Afonso Maria Reis Madeira Boavida
+51956	Patricia Sofia Martins Afonso
+51979	Caio Marcos Jordao Viana Carvalho
+52198	Janisio Evaristo Correia
+52300	Patricia Alexandra Pereira de Morais Neves
+52339	Luis Miguel Marcos Botelho Pires da Silva
+52341	Miguel Pereira Valente
+52346	Tiago Miguel Melo Couto
+52353	Afonso Filipe Esteves Quinaz
+52357	Daniel Bruno Goncalves Carvalho Pires
+52358	Miguel Martins Vitoria
+52372	Pedro Miguel Moacho Rodrigues
+52377	Diogo Miguel Duarte Vaqueira
+52390	Goncalo Maria Guerreiro Rato
+52391	Minal Camlesh Chotalal
+52401	Lourenco Miguel Pires Cabral
+52403	Joao Pedro da Conceicao Gomes Nunes Graca
+52407	Jose Maria Henriques Velez de Lima
+52411	Guilherme Eloi de Castro Pacheco
+52416	Maria Coelho Bento de Melo
+52417	Afonso Sousa Martins Mendes Maria
+52418	Americo Antonio Sousa Couto Alves
+52427	Marco Antonio Carvalho Lopes Caria
+52428	Ricardo Nuno Pedro Branco
+52430	Jose Duarte Simoes Ferreira
+52431	Alexandre Miguel Afonso de Brito
+52432	Diogo Pires Rego Maymone
+52493	Francisco Alexandre Silva Lopes
+52511	Pedro Alexandre Francisco Capelo
+52512	Sara Pinto Paralta
+52513	Joao Francisco Carvalho Gregorio
+52516	Francisco Manuel Dores Marques
+52544	Antonio Pinheiro Alves
+52545	Simao Pedro Cruz Tadeu Costa
+52546	Diogo Alexandre Portas Faias
+52548	Joao Pedro Alves Oliveira
+52550	Diogo Miguel de Oliveira Marques
+52614	Francisco Amador de Jesus Luis
+52619	Joao Luis Felizardo Almeida
+52628	Rui Pedro Gabriel Cara de Anjo
+52631	Patricia Alexandra Martins Simplicio
+52634	Joao Pedro Marcelo Goulao
+52643	Tiago Miguel Boto Tempera
+52646	Daniel Teixeira Fernandes Dias de Almeida
+52657	Joao Pedro Grilo da Silva
+52662	Angela Ribeiro Carreira
+52673	Daniel Francisco Brito Lemos de Corte-Real
+52677	Rodrigo Ventura de Jesus
+52681	Eduardo da Costa Teixeira
+52691	Dani Andres Rodrigues Genovese
+52692	Joao Daniel Marques Anastacio
+52693	Joao Pedro Coelho Nicolau Tabanez Patricio
+52697	Joao Pedro Freixo Rodrigues
+52700	Ricardo Manuel da Cruz Ascenso
+52702	Carlos Andre Lobo Nascimento
+52711	Gustavo Nuno Estevao Duarte dos Santos Rato
+52712	Laura Gaspar Martins
+52725	Manuel Maria Gomes Sanches Fernandes
+52726	Joao Duarte Palma
+52727	Daniel Matias de Sousa
+52750	Maria Quintela de Saldanha da Cunha
+52751	Waner Shan
+52755	Filipe Miguel de Brito Marques
+52758	Joao Jose Matias Santos
+52763	Cristiano Andre Antunes Barata
+52764	Pedro Goncalo Lopes Barreira
+52776	David Silva Tiago
+52785	David Batista Garcias
+52791	Guilherme Calado Claro Chaves Costa
+52801	Mihail Vacarciuc
+52825	Rodolfo Anastacio Do Espirito Santo
+52826	Joao Tiago Barata Pereira
+52827	Miguel Duarte Cardoso Real Carvalho
+52828	Alessia Jennifer Fortes Offsas
+52829	Daniel Machado Caldeira
+52830	Samuel Felix Barbosa
+52831	Santiago Fidalgo Riveiro Gil
+52832	Francisco Moura Goncalves Seabra
+52833	Goncalo de Jesus Avelino Gomes da Silva
+52834	Francisca Dimas da Silva Dotti
+52837	Rafael Damaso Genio Tocantins Rodrigues
+52848	Lawrence William Roquette Booth
+52849	Catarina Rodrigues Nogueira
+52850	Francisco Santos Almirante
+52851	Tiago Manuel Valente Martins
+52852	Joao Daniel Catita Porem Machado
+52853	Fabio Miguel Amaral Pires
+52855	Ines Rebelo Jorge
+52856	Tiago Marques de Simoes Rodrigues
+52931	Diogo Duarte Costa
+52933	Ines Tavares Correia
+52942	Hugo Pinto Martins
+52950	Goncalo Velho Cabral Pacheco Furtado
+52961	Luis Carlos Pinto da Silva
+52979	Rodrigo Goncalves Borges Simoes
+52980	Pedro Daniel Martins Braganca
+52986	Manuel Maria Trigo de Meneses da Costa Pessoa
+52992	Tiago Ferreira Felix da Costa Reis
+52993	Alexandru Botnari
+52994	Andre Duarte Rodrigues
+52995	Duarte Nuno Valerio Miguel Guerreiro de Oliveira
+52998	Lourenco Aires de Sousa Silveira Rodrigues
+53000	Leandra Filipa Agostinho Franco
+53012	Pedro Daniel Nunes dos Santos Rosario da Costa
+53025	Iuri Andrade Branquinho
+53036	Miguel Antonio Soldado Lopes
+53038	Francisco Miguel Raimundo Gomes
+53045	Joao Pedro Nunes Lameiras
+53060	Marcelo Teixeira Colaco
+53067	Lourenco Manuel Viana Guarda Soares
+53071	Goncalo Terras Costa Dias
+53080	Rodrigo Lima Teixeira
+53092	Henrique Pinto da Cruz Fernandes
+53093	Rafael Artur Henriques Leitao
+53099	Pedro Miguel Ferreira da Silva
+53101	Afonso Miguel Rosa Ferreira
+53123	Francisco Manuel Antunes Duarte
+53124	Duarte Catarino Alves
+53125	Joao Pedro de Figueiredo Henriques
+53129	Maria Rita Correia Teixeira
+53130	David Correia Lobo
+53145	Joao Francisco Lopes Faria
+53150	Ines Ferreira Casaleiro Nogueira de Brito
+53151	Riccardo Simoes Chianese
+53152	Henrique Maria Costa Pereira e Cetra
+53159	Filipe Jose Frasco Velasques
+53160	Guilherme Nascimento Coisinha Marques dos Santos
+53202	Alexandre Manuel Silva Cardoso
+53218	Maria Joao Alves de Carvalho
+53236	Miguel Ferreira Duarte de Mendonca Pontes
+53239	Francisco Valadas de Albuquerque
+53256	Celina Mo Zheng
+53276	Tiago Jorge Guerreiro da Silva
+53287	Diogo Carvalho da Rocha Coelho
+53318	Joao Pedro Carvalho Paulo
+53321	Joao Carlos Novo Augusto
+53326	Vasco Guimaraes da Graca
+53337	Pedro Henrique Castro Silva
+53340	Andre Tiago Ferreira Barreiros
+53366	Miguel Jose Delicado Pacheco
+53405	Henrique Sarmento Caldeira
+53409	Gerson Fernando Sousa Figueiredo
+53434	Joao Henrique Ribeiro Berardo
+53487	Goncalo Joao Rodrigues Faias
+53490	Diogo Caetano Pereira Lucas
+53498	Saul Pinheiro de Carvalho Neto
+53511	Goncalo Filipe Dias Rodrigues
+53570	Pedro Miguel Raposo Moreira Dias
+53572	Daniel Antonio Graca Dias
+53579	Eduardo Miguel Martins Dias
+53585	Ricardo Miguel Pires de Sousa
+53591	Miguel Couto Vilares
+53597	Duarte de Oliveira Antunes e Rodrigues Miguel
+53606	Miguel Angelo Dias Batista
+53609	Goncalo Dias Alves Sousa Gago
+53628	Rodrigo Miguel Cardoso Marques
+53640	Catarina Machado Moura
+53656	Diogo Picanco Martins
+53676	Mariana Raimundo Pardal
+53688	Tiago Leitao Goncalves Manuel
+53693	Eduardo Santos Paulo Robim Salvador
+53706	Daniel Neto Sebastiao
+53724	Nuno Filipe Batista Longo
+53785	Carlota Martins Valente Sequeira Nobre
+53798	Tiago Jacques Afonso Gamboa Vicente
