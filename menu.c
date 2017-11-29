@@ -11,14 +11,14 @@
         Used for selecting which functions to execute
 --------------------------------------------------------------*/
 
-#include <menu.h>
+#include "menu.h"
 
-int menu()
+void menu()
 {
     int o;
     system("clear");
-    printf("\tCompanhia de Aviação \“Ja Fui\”\n");
-    printf("\t\tPrograma de Reservas\n\n\n");
+    printf("\tCompanhia de Aviação “Ja Fui”\n");
+    printf("\t    Programa de Reservas\n\n\n");
     printf("0 – Sair do programa\n");
     printf("1 – Ler ficheiro de texto\n");
     printf("2 - Ler ficheiro binário\n");
