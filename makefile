@@ -1,15 +1,28 @@
-############################# Sexy Makefile #############################
-SRC=main.c
-all: menu
-menu: menu.o main.o 
-        gcc -o menu menu.o main.o
+############################ Sexy Makefile ##############################
+
+all: program clean
+	@echo done!
+
+########################### Program Recipie #############################
+
+program: main.o menu.o
+	@echo merging .o files
+	@gcc -o program main.o menu.o
+
+
+######################### Program Ingridients ###########################
+
+main.o: main.c menu.h	
+	@echo creating main.o
+	@gcc -c main.c -Wall
 
 menu.o: menu.c
-        gcc -o menu.o -c menu.c -Wall
+	@echo creating menu.o
+	@gcc -c menu.c -Wall
 
-main.o: $(SRC) menu.h
-        gcc -o main.o -c $(SRC) -Wall
+
+############################ Cleanup Crew ##############################
+
 clean:
-        rm -rf *.o
-mrproper: clean
-        rm -rf menu
+	@echo cleaning up
+	@rm -rf *.o
