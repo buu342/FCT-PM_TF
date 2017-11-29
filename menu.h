@@ -1,6 +1,6 @@
 #ifndef PMMENU_H_
 #define PMMENU_H_
 
-int menu()
+void menu();
 
 #endif
