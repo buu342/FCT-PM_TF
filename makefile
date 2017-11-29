@@ -1,28 +1,34 @@
 ############################ Sexy Makefile ##############################
 
-all: program clean
+all: gest clean_o
 	@echo done!
 
 ########################### Program Recipie #############################
 
-program: main.o menu.o
+gest: main.o menu.o
 	@echo merging .o files
-	@gcc -o program main.o menu.o
+	@gcc -o gest main.o menu.o
 
 
-######################### Program Ingridients ###########################
+######################### Program Ingredients ###########################
 
-main.o: main.c menu.h	
+main.o: ./src/main.c ./src/headers/menu.h	
 	@echo creating main.o
-	@gcc -c main.c -Wall
+	@gcc -c ./src/main.c -Wall
 
-menu.o: menu.c
+menu.o: ./src/menu.c
 	@echo creating menu.o
-	@gcc -c menu.c -Wall
+	@gcc -c ./src/menu.c -Wall
 
 
 ############################ Cleanup Crew ##############################
 
-clean:
-	@echo cleaning up
+clean_o:
+	@echo cleaning up .o files
 	@rm -rf *.o
+
+clean:
+	@echo Cleaning up everything as requested
+	@rm -rf *.o
+	@rm -rf gest
+	@echo Done!
