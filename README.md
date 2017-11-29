@@ -1,6 +1,3 @@
-# TrabalhoFinalPM2017
+# Trabalho Final PM 2017
 
-
-pls give 20
-
-https://www.onlinegdb.com/online_c_compiler
+By Lourenço Soares (53067) and Tiago Reis (#####)
