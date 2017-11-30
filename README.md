@@ -1,6 +1,6 @@
 ### Trabalho Final PM 2017
 
-#By Lourenço Soares (53067).
+# By Lourenço Soares (53067).
 
 
 If you're reading this, first I apologize for the following things:
