@@ -2,8 +2,6 @@
 
 ### By Lourenço Soares (53067).
 
-
-
 If you're reading this, first I apologize for the following things:
 
 >1 - Using English instead of Portuguese
