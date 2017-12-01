@@ -44,6 +44,8 @@ void menu()
             case 6:
             case 7:
             case 8:
+                system("clear");
+                printf("Adeus!");
                 exit(0);
                 break;
             default:
