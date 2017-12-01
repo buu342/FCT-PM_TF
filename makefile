@@ -1,7 +1,11 @@
 ############################ Sexy Makefile ##############################
 
-all: make_gest clean_o
+all: start_make make_gest clean_o
 	@echo Done!
+
+start_make:
+	@clear
+	@echo Starting program maker.
 
 ########################### Program Recipie #############################
 
