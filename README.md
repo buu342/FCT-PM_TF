@@ -4,8 +4,8 @@
 #
 If you're reading this, first I apologize for the following things:
 
->1 - Using English instead of Portuguese
->2 - Not using a single c file.
->3 - Using Github
+⋅⋅* Using English instead of Portuguese
+⋅⋅* Not using a single c file.
+⋅⋅* Using Github
 
 Also please give me a 20 ;_; 
