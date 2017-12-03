@@ -124,7 +124,7 @@ int store_text(PASSENGER *passengers, char *filename)
     while(1) // I have to do this to stop getchar from reading the first enter keystroke.
     {
         c = getchar();
-        if (succesful_firstread == 1 || i > 0)
+        if (c == '\n' && (succesful_firstread == 1 || i > 0))
             break;
         else
             i++;
@@ -171,6 +171,33 @@ int store_binary(PASSENGER *passengers, char *filename)
         }
     }
 
+    // Check if it's a binary file. There's many ways to do this and neither is 100% fool proof.
+    // But this seems to work, as long as the first 4 bytes of a text file are not populated by 
+    // anything smaller than DEVICE CONTROLLER 1 (17 on the ASCII table), which is unlikely unless
+    // the file it's reading has JUST THE RIGHT 4 Characters (or less) in it.
+    // But who writes 4 character text documents anyway?
+    int temp_checker;
+    fread(&temp_checker, 4, 1, p_file);
+    if (temp_checker > 99999 || temp_checker < 10000)
+    {
+        if (succesful_firstread == 0 || filename == NULL)
+            printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, temp_filename);
+        else
+            printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, filename);
+        __fpurge(stdin);
+
+        j=0;
+        while(1)
+        {
+            c = getchar();
+            if (j > 0)
+                break;
+            else
+                j++;
+        }
+        return 0; // Return failure
+    }
+
     while(1)
     {
         // Store the data
@@ -195,11 +222,11 @@ int store_binary(PASSENGER *passengers, char *filename)
     while(1) // I have to do this to stop getchar from reading the first enter keystroke.
     {
         c = getchar();
-        if (c && (succesful_firstread == 1 || j > 0)) // Had to check for c or -Wall would complain
+        if (c == '\n' && (succesful_firstread == 1 || j > 0))
             break;
         else
             j++;
     }
 
-    return 1;
+    return 1; // Return success
 }
