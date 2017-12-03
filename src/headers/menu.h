@@ -1,6 +1,6 @@
 #ifndef PMMENU_H_
 #define PMMENU_H_
 
-void menu();
+void menu(PASSENGER* passengers);
 
 #endif
