@@ -6,52 +6,85 @@
 #include <stdlib.h> // For use of the exit and system functions
 #include <stdio_ext.h> // For use of the __fpurge function
 
+
+/*--------------------------------------------------------------
+                Custom Libraries and macros
+--------------------------------------------------------------*/
+
+#include "headers/struct_n_macros.h"
+#include "headers/store.h"
+#include "headers/menu.h"
+
+
 /*--------------------------------------------------------------
                             Menu
         Used for selecting which functions to execute
 --------------------------------------------------------------*/
 
-#include "headers/menu.h"
-
-void menu()
+void menu(PASSENGER* passengers)
 {
-    int o;
-    system("clear");
-    printf("\tCompanhia de Aviação “Ja Fui”\n");
-    printf("\t    Programa de Reservas\n\n\n");
-    printf("0 – Sair do programa\n");
-    printf("1 – Ler ficheiro de texto\n");
-    printf("2 - Ler ficheiro binário\n");
-    printf("3 – Listar passageiros de um voo\n");
-    printf("4 – Número de passageiros de um período de dias\n");
-    printf("5 – Escrita em ficheiro\n");
-    printf("6 – Análise económica\n");
-    printf("7 – Passageiros em duas escalas\n");
-    printf("8 – Reserva simples de um voo\n\n");
-    printf("Qual opção quer? ");
+    int doOption;   // Allows us to refresh the menu once a function has been completed
+    char o;         // To select a menu option
+
+    int success;    // To make sure the user has sucessfully loaded a database in the main.
+
+    if (passengers[1].id == -1)
+        success = 0;
+    else
+        success = 1;
 
     while (1)
     {
-        scanf(" %i", &o);
-        switch (o)
+        doOption = 1;
+
+        system("clear");
+
+        printf(cr_green "\tCompanhia de Aviação “Ja Fui”\n" cr_green);
+        printf(cr_green "\t    Programa de Reservas\n\n\n" cr_green);
+        printf(cr_cyan "0 " cr_reset "– Sair do programa\n");
+        printf(cr_cyan "1 " cr_reset "– Ler ficheiro de texto\n");
+        printf(cr_cyan "2 " cr_reset "– Ler ficheiro binário\n");
+        printf(cr_cyan "3 " cr_reset "– Listar passageiros de um voo\n");
+        printf(cr_cyan "4 " cr_reset "– Número de passageiros de um período de dias\n");
+        printf(cr_cyan "5 " cr_reset "– Escrita em ficheiro\n");
+        printf(cr_cyan "6 " cr_reset "– Análise económica\n");
+        printf(cr_cyan "7 " cr_reset "– Passageiros em duas escalas\n");
+        printf(cr_cyan "8 " cr_reset "– Reserva simples de um voo\n\n");
+        printf(cr_magenta "Qual opção quer? " cr_reset);
+        
+        while (doOption)
         {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-                system("clear");
-                printf("Adeus!");
-                exit(0);
-                break;
-            default:
-                printf("Opção inválida. Tente outra: ");
-                __fpurge(stdin);
-                break;
+            scanf(" %c", &o);
+            switch (o)
+            {
+                case '0':
+                    system("clear");
+                    printf("Adeus!\n\n");
+                    exit(0);
+                    break;
+                case '1':
+                    success = store_text(passengers, NULL); // The NULL will make the function see it has no filename, so it will prompt one from the user
+                    doOption = 0;
+                    break;
+                case '2':
+                    success = store_binary(passengers, NULL);
+                    doOption = 0;
+                    break;
+                case '3':
+                    if (success == 1)
+                        printf("%i\n",passengers[3249].id);
+                    //doOption = 0;
+                    break;
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                default:
+                    printf(cr_red "Opção inválida." cr_magenta " Tente outra: " cr_reset);
+                    __fpurge(stdin);
+                    break;
+            }
         }
     }
 }
