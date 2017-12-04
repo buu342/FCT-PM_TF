@@ -2,9 +2,9 @@
                     Standard C Libraries
 --------------------------------------------------------------*/
 
-#include <stdio.h> // For use of literally everything (Thanks Mike Lesk!)
-#include <stdlib.h> // For use of the exit and system functions
-#include <stdio_ext.h> // For use of the __fpurge function
+#include <stdio.h>      // For use of literally everything (Thanks Mike Lesk!)
+#include <stdlib.h>     // For use of the exit and system functions
+#include <stdio_ext.h>  // For use of the __fpurge function
 
 
 /*--------------------------------------------------------------
@@ -17,6 +17,27 @@
 
 
 /*--------------------------------------------------------------
+                        press_enter
+        Handles the "Press Enter to continue" message
+--------------------------------------------------------------*/
+
+void press_enter()
+{
+    printf(cr_magenta "Prima Enter para continuar." cr_reset);
+    int i=0;
+    char c;
+    while(1) // I have to do this to stop getchar from reading the first enter keystroke.
+    {
+        c = getchar();
+        if (c == '\n' && i>0)
+            break;
+        else
+            i++;
+    }
+}
+
+
+/*--------------------------------------------------------------
                             Menu
         Used for selecting which functions to execute
 --------------------------------------------------------------*/
@@ -24,11 +45,10 @@
 void menu(PASSENGER* passengers)
 {
     int doOption;   // Allows us to refresh the menu once a function has been completed
-    char o;         // To select a menu option
-
+    char o;         // To   select a menu option
     int success;    // To make sure the user has sucessfully loaded a database in the main.
 
-    if (passengers[1].id == -1)
+    if (passengers[1].id == 0)
         success = 0;
     else
         success = 1;
@@ -36,7 +56,6 @@ void menu(PASSENGER* passengers)
     while (1)
     {
         doOption = 1;
-
         system("clear");
 
         printf(cr_green "\tCompanhia de Aviação “Ja Fui”\n" cr_green);
@@ -54,6 +73,7 @@ void menu(PASSENGER* passengers)
         
         while (doOption)
         {
+
             scanf(" %c", &o);
             switch (o)
             {
@@ -73,7 +93,12 @@ void menu(PASSENGER* passengers)
                 case '3':
                     if (success == 1)
                         printf("%i\n",passengers[3249].id);
-                    //doOption = 0;
+                    else    
+                    {
+                        printf(cr_red "É necessário ler um ficheiro de texto ou binário antes de correr esta ação.\n\n" cr_reset);
+                        press_enter();
+                    }
+                    doOption = 0;
                     break;
                 case '4':
                 case '5':
