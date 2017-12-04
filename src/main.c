@@ -11,9 +11,9 @@
  Apparently C supports ANSI escape sequences. Time to abuse :D
 --------------------------------------------------------------*/
 
-#include "headers/struct_n_macros.h"  // Contains our struct and some macros, such as colors :D
-#include "headers/menu.h"       // Menu
-#include "headers/store.h"      // Storing functions
+#include "headers/struct_n_macros.h"    // Contains our struct and some macros, such as colors :D
+#include "headers/menu.h"               // Menu
+#include "headers/store.h"              // Storing functions
 
 
 /*--------------------------------------------------------------
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 {
     PASSENGER passengers[6000]; // Given that Main only closes when the program ends, I can keep using it to store my variables, since global variables are condemned. The prefect crime...
 
-    passengers[1].id = -1; // This is explained in the menu, but essentially is there to ensure the user has properly read a database.
+    passengers[1].id = 0; // This is explained in the menu, but essentially is there to ensure the user has properly read a database.
 
     if (argc > 1) // Check if there's something in front of the program name. If not, open the menu instantly
     {
