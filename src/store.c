@@ -2,9 +2,9 @@
                     Standard C Libraries
 --------------------------------------------------------------*/
 
-#include <stdio.h> // For use of literally everything (Thanks Mike Lesk!)
-#include <stdlib.h> // For use of the exit and system functions
-#include <stdio_ext.h> // For use of the __fpurge function
+#include <stdio.h>      // For use of literally everything (Thanks Mike Lesk!)
+#include <stdlib.h>     // For use of the exit and system functions
+#include <stdio_ext.h>  // For use of the __fpurge function
 
 
 /*--------------------------------------------------------------
@@ -21,7 +21,7 @@
 
 int store_text(PASSENGER *passengers, char *filename)
 {
-    char c;
+    char c; // For the "Press enter to continue" messages.
     char temp_filename[100]; // Safety, in case people provide incorrect file names first time around.
     int i = 0, j = 0, succesful_firstread = 1;  // succesful_firstread was needed since I couldn't modify the pointer's value. There's probably a nicer way to do this but I'm not sure how now. I'll sleep on it.
                                                 // 'i' will be used for counting characters while j will be used for counting lines.
@@ -30,7 +30,7 @@ int store_text(PASSENGER *passengers, char *filename)
     if (filename == NULL)
         printf(cr_magenta "Escreva o nome do ficheiro a abrir: " cr_reset);
 
-    while (1) // Make sure it's a real file.
+    while (1) // Make sure the file exists. There's two checks, one for when an argument is provided in the command line directly and one for when the function was ran manually via the menu.s
     {
         if (succesful_firstread == 0 || filename == NULL)
         {
@@ -65,6 +65,8 @@ int store_text(PASSENGER *passengers, char *filename)
 
     j = i = 0; // Reset i and j to prevent line reading mistakes.
 
+    fseek(p_file, 0, SEEK_SET); // Jump back to the beggining of the file. 
+
     while((c=getc(p_file))) // Extra parenthesis or -Wall would complain
     {
         i++;
@@ -73,7 +75,13 @@ int store_text(PASSENGER *passengers, char *filename)
 
         if (c == '\n')
         {
-            if (i == 81) // This is to make sure it's a correct database file and not a binary file.
+
+            // Check if it's a database file. There's many ways to do this and neither is 100% fool proof.
+            // But this seems to work, as long as the first 5 characters of every line of a text file are not populated by 
+            // anything smaller than line feeds (10 on the ASCII table), which is unlikely unless
+            // the file it's reading has JUST THE RIGHT 5 Characters (or less) in it per line.
+            // But who writes 5 character text documents anyway?
+            if (i == 81 && (passengers[j].id < 99999 && passengers[j].id > 10000)) // This is to make sure it's a correct database file.
             {
                 j++;
                 i = 0;
@@ -87,14 +95,11 @@ int store_text(PASSENGER *passengers, char *filename)
                     printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, filename);
                 __fpurge(stdin);
 
-                i=0;
                 while(1)
                 {
                     c = getchar();
-                    if (i > 0)
+                    if (c == '\n')
                         break;
-                    else
-                        i++;
                 }
                 return 0; // Return failure
             }
@@ -116,15 +121,17 @@ int store_text(PASSENGER *passengers, char *filename)
     fclose(p_file);
 
     if (succesful_firstread == 0 || filename == NULL)
-        printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, temp_filename);
+        printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_reset, temp_filename);
     else
-        printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, filename);
+        printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_reset, filename);
 
+    printf(cr_magenta "Prima Enter para continuar." cr_reset);
     i = 0;
-    while(1) // I have to do this to stop getchar from reading the first enter keystroke.
+    while (1)
     {
+        
         c = getchar();
-        if (c == '\n' && (succesful_firstread == 1 || i > 0))
+        if (c == '\n' && (filename != NULL || i > 0))
             break;
         else
             i++;
@@ -144,7 +151,7 @@ int store_binary(PASSENGER *passengers, char *filename)
     if (filename == NULL)
         printf(cr_magenta "Escreva o nome do ficheiro a abrir: " cr_reset);
 
-    while (1) // Make sure it's a real file.
+    while (1) // Make sure the file exists
     {
         if (succesful_firstread == 0 || filename == NULL)
         {
@@ -171,62 +178,58 @@ int store_binary(PASSENGER *passengers, char *filename)
         }
     }
 
-    // Check if it's a binary file. There's many ways to do this and neither is 100% fool proof.
-    // But this seems to work, as long as the first 4 bytes of a text file are not populated by 
-    // anything smaller than DEVICE CONTROLLER 1 (17 on the ASCII table), which is unlikely unless
-    // the file it's reading has JUST THE RIGHT 4 Characters (or less) in it.
-    // But who writes 4 character text documents anyway?
-    int temp_checker;
-    fread(&temp_checker, 4, 1, p_file);
-    if (temp_checker > 99999 || temp_checker < 10000)
-    {
-        if (succesful_firstread == 0 || filename == NULL)
-            printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, temp_filename);
-        else
-            printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, filename);
-        __fpurge(stdin);
-
-        j=0;
-        while(1)
-        {
-            c = getchar();
-            if (j > 0)
-                break;
-            else
-                j++;
-        }
-        return 0; // Return failure
-    }
-
     while(1)
     {
         // Store the data
 
-        if (fread(&passengers[j].id, 4, 1, p_file) != 1)
-            break;
+        if (fread(&passengers[j].id, 4, 1, p_file) != 1) // Read 1 data element of 4 bytes
+            break;                                       // If it didn't read 4 bytes, it's at the EOF.
         fread(&passengers[j].name, 51, 1, p_file);
         fread(&passengers[j].orig, 11, 1, p_file);
         fread(&passengers[j].dest, 11, 1, p_file);
         fread(&passengers[j].day, 3, 1, p_file); // You said it was 2 bytes! Gave me a headache with my already existing one :(
         passengers[j].day = passengers[j].day/256;
 
+        // Line per line safety check, just like in store_text()
+
+        if (passengers[j].id > 99999 || passengers[j].id < 10000)
+        {
+            if (succesful_firstread == 0 || filename == NULL)
+                printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, temp_filename);
+            else
+                printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, filename);
+            __fpurge(stdin);
+
+            while(1)
+            {
+                c = getchar();
+                if (c == '\n')
+                    break;
+            }
+            return 0; // Return failure
+        }
+
         j++;
     }
+    fclose(p_file);
 
     if (succesful_firstread == 0 || filename == NULL)
-        printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, temp_filename);
+        printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_reset, temp_filename);
     else
-        printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, filename);
+        printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_reset, filename);
 
+    printf(cr_magenta "Prima Enter para continuar." cr_reset);
     j = 0;
-    while(1) // I have to do this to stop getchar from reading the first enter keystroke.
+    while (1)
     {
+        
         c = getchar();
-        if (c == '\n' && (succesful_firstread == 1 || j > 0))
+        if (c == '\n' && (filename != NULL || j > 0))
             break;
         else
             j++;
     }
+
 
     return 1; // Return success
 }
