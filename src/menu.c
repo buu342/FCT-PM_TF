@@ -13,6 +13,7 @@
 
 #include "headers/struct_n_macros.h"
 #include "headers/store.h"
+#include "headers/list.h"
 #include "headers/menu.h"
 
 
@@ -92,12 +93,10 @@ void menu(PASSENGER* passengers)
                     break;
                 case '3':
                     if (success == 1)
-                        printf("%i\n",passengers[3249].id);
+                        list_passengers(passengers);
                     else    
-                    {
                         printf(cr_red "É necessário ler um ficheiro de texto ou binário antes de correr esta ação.\n\n" cr_reset);
-                        press_enter();
-                    }
+                    press_enter();
                     doOption = 0;
                     break;
                 case '4':
