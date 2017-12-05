@@ -16,7 +16,8 @@
 
 
 /*--------------------------------------------------------------
-                    Text Storing functions
+                        store_text
+            Retrieves and stores data from a text file
 --------------------------------------------------------------*/
 
 int store_text(PASSENGER *passengers, char *filename)
@@ -57,9 +58,15 @@ int store_text(PASSENGER *passengers, char *filename)
         }
     }
 
-    for (j=0;j<6000;j++)    // Wipe the database to prevent math errors.
+    for (j=0;j<6000;j++)    // Wipe the old database
     {
         passengers[j].id = 0;
+        for (i=0;i<51;i++)
+            passengers[j].name[i] = '\0';
+        for (i=0;i<11;i++)
+            passengers[j].orig[i] = '\0';
+        for (i=0;i<11;i++)
+            passengers[j].dest[i] = '\0';
         passengers[j].day = 0;
     }
 
@@ -139,12 +146,18 @@ int store_text(PASSENGER *passengers, char *filename)
     return 1; // Return success
 }
 
+
+/*--------------------------------------------------------------
+                        store_binary
+        Retrieves and stores data from a binary filex
+--------------------------------------------------------------*/
+
 int store_binary(PASSENGER *passengers, char *filename)
 {
     
     char c;
     char temp_filename[100]; // Safety, in case people provide incorrect file names first time around.
-    int j = 0, succesful_firstread = 1; // succesful_firstread was needed since I couldn't modify the pointer's value. There's probably a nicer way to do this but I'm not sure how now. I'll sleep on it.
+    int j = 0, i = 0, succesful_firstread = 1; // succesful_firstread was needed since I couldn't modify the pointer's value. There's probably a nicer way to do this but I'm not sure how now. I'll sleep on it.
                                                // 'i' will be used for counting characters while j will be used for counting lines.    
     FILE *p_file;
 
@@ -177,6 +190,19 @@ int store_binary(PASSENGER *passengers, char *filename)
                 break;
         }
     }
+
+    for (j=0;j<6000;j++)    // Wipe the old database
+    {
+        passengers[j].id = 0;
+        for (i=0;i<51;i++)
+            passengers[j].name[i] = '\0';
+        for (i=0;i<11;i++)
+            passengers[j].orig[i] = '\0';
+        for (i=0;i<11;i++)
+            passengers[j].dest[i] = '\0';
+        passengers[j].day = 0;
+    }
+    j = i = 0; // Reset i and j to prevent line reading mistakes.
 
     while(1)
     {
