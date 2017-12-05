@@ -11,9 +11,9 @@ start_make:
 
 ########################### Program Recipie #############################
 
-make_gest: make_main make_menu make_store
+make_gest: make_main make_menu make_store make_list
 	@echo Merging .o files
-	@gcc -o gest main.o menu.o store.o
+	@gcc -o gest main.o menu.o store.o list.o
 
 
 ######################### Program Ingredients ###########################
@@ -30,6 +30,10 @@ make_menu: ./src/menu.c ./src/headers/*.h
 make_store: ./src/store.c ./src/headers/*.h
 	@echo Creating store.o
 	@gcc -c ./src/store.c -Wall
+
+make_list: ./src/list.c ./src/headers/*.h
+	@echo Creating list.o
+	@gcc -c ./src/list.c -Wall
 
 
 ############################ Cleanup Crew ##############################
