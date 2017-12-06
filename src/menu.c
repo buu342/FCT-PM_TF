@@ -43,16 +43,16 @@ void press_enter()
         Used for selecting which functions to execute
 --------------------------------------------------------------*/
 
-void menu(PASSENGER* passengers)
+void menu(PASSENGER *passengers)
 {
-    int doOption;   // Allows us to refresh the menu once a function has been completed
-    char o;         // To   select a menu option
-    int success;    // To make sure the user has sucessfully loaded a database in the main.
+    int doOption;           // Allows us to refresh the menu once a function has been completed
+    char o;                 // To   select a menu option
+    int database_loaded;    // To make sure the user has sucessfully loaded a database in the main.
 
-    if (passengers[1].id == 0)
-        success = 0;
+    if (passengers[50].id == 0) // If the user loaded a database via ./gest FILE, detect the database is loaded
+        database_loaded = 0;
     else
-        success = 1;
+        database_loaded = 1;
 
     while (1)
     {
@@ -84,22 +84,29 @@ void menu(PASSENGER* passengers)
                     exit(0);
                     break;
                 case '1':
-                    success = store_text(passengers, NULL); // The NULL will make the function see it has no filename, so it will prompt one from the user
+                    database_loaded = store_text(passengers, NULL); // The NULL will make the function see it has no filename, so it will prompt one from the user
                     doOption = 0;
                     break;
                 case '2':
-                    success = store_binary(passengers, NULL);
+                    database_loaded = store_binary(passengers, NULL);
                     doOption = 0;
                     break;
                 case '3':
-                    if (success == 1)
-                        list_passengers(passengers);
+                    if (database_loaded == 1)
+                        list_passengers(passengers, 0, 0);
                     else    
                         printf(cr_red "É necessário ler um ficheiro de texto ou binário antes de correr esta ação.\n\n" cr_reset);
                     press_enter();
                     doOption = 0;
                     break;
                 case '4':
+                    if (database_loaded == 1)
+                        ten_day_table(passengers);
+                    else    
+                        printf(cr_red "É necessário ler um ficheiro de texto ou binário antes de correr esta ação.\n\n" cr_reset);
+                    press_enter();
+                    doOption = 0;
+                    break;
                 case '5':
                 case '6':
                 case '7':
