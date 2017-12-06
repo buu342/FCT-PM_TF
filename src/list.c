@@ -5,6 +5,7 @@
 #include <stdio.h>      // For use of literally everything (Thanks Mike Lesk!)
 #include <stdlib.h>     // For use of the exit and system functions
 #include <stdio_ext.h>  // For use of the __fpurge function
+#include <string.h>     // For use of strcpy and strcmp
 
 
 /*--------------------------------------------------------------
@@ -15,37 +16,134 @@
 #include "headers/list.h"
 
 
+
 /*--------------------------------------------------------------
-                       orig_dest_compare
-        compares the 11 chars in the origin/dest arrays
+                        list_passengers
+            Lists passengers of a specific flight
+        Also returns how many people between those flights
 --------------------------------------------------------------*/
 
-int orig_dest_compare(char *str1, char *str2)
+int list_passengers(PASSENGER *passengers, int day_check, int flight_check)
 {
-    int i,j=0;
-    for (i=0;i<11;i++)
+    int i=0, j=0;
+    int do_print = 0;
+    int flight_first_line=-1, flight_last_line=0; // For knowing which lines to read when printing.
+    char origem_dest[9][2][11]= 
+    { 
+        {"Lisboa    ", "Amesterdao"},
+        {"Amesterdao", "Berlim    "},
+        {"Amesterdao", "Bucareste "},
+        {"Lisboa    ", "Frankfurt "},
+        {"Frankfurt ", "Varsovia  "},
+        {"Frankfurt ", "Bucareste "},
+        {"Lisboa    ", "Milao     "},
+        {"Milao     ", "Berlim    "},
+        {"Milao     ", "Varsovia  "}
+    };
+
+    if (day_check == 0 && flight_check == 0) // If the 2nd and 3rd arguments were not provided, it means the function was ran from the menu.
+        do_print = 1;     
+
+    if (do_print == 1) // Check if arguments were provided.
     {
-        if (str1[i] == str2[i])
-            j++;
+        printf(cr_magenta "Indique o dia que quer ver: " cr_reset);
+        while (1) // Only let a number between 1 and 30 pass.
+        {
+            scanf(" %i", &day_check);
+            if (day_check > 0 && day_check <= 30)
+                break;
+            else // You shall not pass
+            {
+                printf(cr_red "O dia tem que ser um numero entre " cr_cyan "1" cr_red " e " cr_cyan "30" cr_red ". " cr_magenta "Experimente outro: " cr_reset);
+                __fpurge(stdin);
+            }
+        }
+        
+        printf(cr_green "\n    Origem\t\tDestino\n" cr_reset);
+        printf(cr_cyan "1" cr_reset " – Lisboa\t\tAmesterdão\n");
+        printf(cr_cyan "2" cr_reset " – Amesterdão\t\tBerlim\n");
+        printf(cr_cyan "3" cr_reset " – Amesterdão\t\tBucareste\n");
+        printf(cr_cyan "4" cr_reset " – Lisboa\t\tFrankfurt\n");
+        printf(cr_cyan "5" cr_reset " – Frankfurt\t\tVarsóvia\n");
+        printf(cr_cyan "6" cr_reset " – Frankfurt\t\tBucareste\n");
+        printf(cr_cyan "7" cr_reset " – Lisboa\t\tMilão\n");
+        printf(cr_cyan "8" cr_reset " – Milão\t\tBerlim\n");
+        printf(cr_cyan "9" cr_reset " – Milão\t\tVarsóvia");
+        printf(cr_magenta "\n\nIndique o voo que quer ver: " cr_reset);
+        while (1) // Only let a number between 1 and 9 pass.
+        {
+            scanf(" %i", &flight_check);
+            if (flight_check > 0 && flight_check <= 9)
+                break;
+            else
+            {
+                printf(cr_red "O voo tem que ser um numero entre " cr_cyan "1" cr_red " e " cr_cyan "9" cr_red ". " cr_magenta "Experimente outro: " cr_reset);
+                __fpurge(stdin);
+            }
+        }
     }
 
-    return (j == 11);
+    for (i=0;i<6000;i++) // First check where in the array the day requested starts
+    {
+        if (passengers[i].day == day_check)
+            j+=(!strcmp(passengers[i].orig,origem_dest[flight_check-1][0]) && !strcmp(passengers[i].dest,origem_dest[flight_check-1][1])); // If both strings are the same, it'll return 0. Negate 0 to get 1. 1 and 1 is 1, so increments j by 1. Else, increments by 0.
+
+        if (j == 1)
+            flight_first_line = i;
+    }
+
+    
+    if (j == 0)
+    {
+        flight_last_line = -1;
+        flight_first_line = 0;
+        if (do_print)
+        {
+            system("clear");
+            printf(cr_green "Dia:     " cr_reset "%d", day_check);
+            printf(cr_red "Não há passageiros marcados nesse voo.\n\n" cr_reset);
+        }
+    }
+    else
+    {
+        flight_last_line = flight_first_line + j-1;
+
+        if (do_print)
+        {
+            system("clear");
+            printf(cr_green "Dia:     " cr_reset "%d", day_check);
+            printf(cr_green "\nOrigem:  " cr_reset);
+
+            printf("%s", origem_dest[flight_check-1][0]);
+            printf(cr_green "\nDestino: " cr_reset);
+            printf("%s\n", origem_dest[flight_check-1][1]);
+
+            for (j=flight_first_line;j<flight_last_line+1;j++)
+            {
+                printf(cr_green "\n%i " cr_reset,passengers[j].id);
+                for (i=0;i<51;i++)
+                    putchar(passengers[j].name[i]);
+            }
+            putchar('\n');
+            putchar('\n');
+        }
+    }
+
+    return (flight_last_line-flight_first_line+1);
 }
 
 
 /*--------------------------------------------------------------
-                        list_passengers
-            Retrieves and stores data from a text file
+                        ten_day_table
+            Creates a table showing 10 days of flights
 --------------------------------------------------------------*/
 
-void list_passengers(PASSENGER* passengers)
+void ten_day_table(PASSENGER *passengers)
 {
     int i,j; // For our loops
-    int day_check, flight_check, day_line=0, flight_line=1; // *_check is the thing the user wishes to check, while *_line is the line of the array being read.
-    int flight_first_line=0, flight_last_line; // For knowing which lines to read when printing.
-    char last_orig[11], last_dest[11]; // For comparing flight locations.
+    int day_check, people_count;
 
-    printf(cr_magenta "Indique o dia que quer ver: " cr_reset);
+    printf(cr_magenta "Indique o dia que começa o intervalo: " cr_reset);
     while (1) // Only let a number between 1 and 30 pass.
     {
         scanf(" %i", &day_check);
@@ -57,82 +155,44 @@ void list_passengers(PASSENGER* passengers)
             __fpurge(stdin);
         }
     }
-    for (i=0;i<6000;i++) // First check where in the array the day requested starts
-    {
-        if (passengers[i].day == day_check)
-        {
-            for (j=0;j<11;j++)
-                last_orig[j] = passengers[i].orig[j];
-            for (j=0;j<11;j++)
-                last_dest[j] = passengers[i].dest[j];
-            break;
-        }
-        day_line++;
-    }
-
-    printf(cr_magenta "Indique o voo que quer ver: " cr_reset);
-    while (1) // Only let a number between 1 and 9 pass.
-    {
-        scanf(" %i", &flight_check);
-        if (flight_check > 0 && flight_check <= 9)
-            break;
-        else
-        {
-            printf(cr_red "O voo tem que ser um numero entre " cr_cyan "1" cr_red " e " cr_cyan "9" cr_red ". " cr_magenta "Experimente outro: " cr_reset);
-            __fpurge(stdin);
-        }
-    }
-    for (i=day_line;i<6000;i++) // Now starting from the day requested, find where the flight starts and ends.
-    {
-        if (passengers[i].day != day_check)
-            break;
-        
-        // There's probably a better way to do this but I'm going to sleep on it.
-
-        if (!(orig_dest_compare(passengers[i].orig,last_orig) && orig_dest_compare(passengers[i].dest,last_dest))) // If the current line of orig+dest is not the same
-        {
-            if (flight_line != flight_check) // And the flight # requested is not the current one
-            {
-                for (j=0;j<11;j++)
-                    last_orig[j] = passengers[i].orig[j];
-                for (j=0;j<11;j++)
-                    last_dest[j] = passengers[i].dest[j];
-                flight_line++;
-            }
-        }
-
-        if (orig_dest_compare(passengers[i].orig,last_orig) && orig_dest_compare(passengers[i].dest,last_dest)) // There is no else statement because I want it to recheck after having incremented flight_line
-        {
-            if (flight_line == flight_check)
-            {
-                if (flight_first_line == 0)
-                    flight_first_line = i;
-
-                flight_last_line = i;
-            }
-        }
-    }
-
-    // Print all the names from flight_first_line to flight_last_line + 1
-
     system("clear");
-
-    printf(cr_green "Dia:     " cr_reset "%d", day_check);
-    printf(cr_green "\nOrigem:  " cr_reset);
-    for (j=0;j<11;j++)
-        putchar(passengers[flight_last_line].orig[j]);
-    printf(cr_green "\nDestino: " cr_reset);
-    for (j=0;j<11;j++)
-        putchar(passengers[flight_last_line].dest[j]);
+    printf(cr_green);
+    printf("\t");
+    for (i=1;i<=9;i++)
+        printf("| Voo %d ", i);
 
     putchar('\n');
 
-    for (j=flight_first_line;j<flight_last_line+1;j++)
+    for(i=0;i<80;i++)
+        putchar('-');
+
+
+    printf(cr_reset);
+
+    for (i=0;i<9;i++)
     {
-        printf(cr_green "\n%i " cr_reset,passengers[j].id);
-        for (i=0;i<51;i++)
-            putchar(passengers[j].name[i]);
+        int day_num = ((day_check+i-1)%30)+1; // Crazy maths to make sure it doesn't display day 30 as 0.
+
+        printf(cr_green "\nDia %d\t|" cr_reset, day_num); 
+
+        for (j=0;j<9;j++)
+        {
+            people_count = list_passengers(passengers, day_num, j+1);
+
+            if (people_count > 9)
+                printf("  %d\t", people_count);
+            else
+                printf("   %d\t", people_count);
+            printf(cr_green "|" cr_reset);
+        }
+
+        putchar('\n');
+        printf(cr_green);
+        for(j=0;j<80;j++)
+            putchar('-');
+        printf(cr_reset);
     }
+
     putchar('\n');
     putchar('\n');
 }
