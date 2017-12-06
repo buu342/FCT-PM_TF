@@ -61,7 +61,7 @@ int store_text(PASSENGER *passengers, char *filename)
     for (j=0;j<6000;j++)    // Wipe the old database
     {
         passengers[j].id = 0;
-        for (i=0;i<51;i++)
+        for (i=0;i<51;i++)                      // Because of the way I coded the while below, the last position of the vector will ALWAYS be '\0', so I don't bother to change it.
             passengers[j].name[i] = '\0';
         for (i=0;i<11;i++)
             passengers[j].orig[i] = '\0';
@@ -112,6 +112,7 @@ int store_text(PASSENGER *passengers, char *filename)
             }
         }
 
+
         // Store the data
 
         if (i<=5)
@@ -124,6 +125,13 @@ int store_text(PASSENGER *passengers, char *filename)
             passengers[j].dest[i-68] = c;
         else if (c != ' ')
             passengers[j].day = c-'0' + passengers[j].day*10;
+
+
+        // Ensure string termination
+
+        passengers[j].name[50] = '\0';
+        passengers[j].orig[10] = '\0';
+        passengers[j].dest[10] = '\0';
     }
     fclose(p_file);
 
@@ -154,7 +162,6 @@ int store_text(PASSENGER *passengers, char *filename)
 
 int store_binary(PASSENGER *passengers, char *filename)
 {
-    
     char c;
     char temp_filename[100]; // Safety, in case people provide incorrect file names first time around.
     int j = 0, i = 0, succesful_firstread = 1; // succesful_firstread was needed since I couldn't modify the pointer's value. There's probably a nicer way to do this but I'm not sure how now. I'll sleep on it.
@@ -208,13 +215,27 @@ int store_binary(PASSENGER *passengers, char *filename)
     {
         // Store the data
 
-        if (fread(&passengers[j].id, 4, 1, p_file) != 1) // Read 1 data element of 4 bytes
-            break;                                       // If it didn't read 4 bytes, it's at the EOF.
-        fread(&passengers[j].name, 51, 1, p_file);
-        fread(&passengers[j].orig, 11, 1, p_file);
-        fread(&passengers[j].dest, 11, 1, p_file);
-        fread(&passengers[j].day, 3, 1, p_file); // You said it was 2 bytes! Gave me a headache with my already existing one :(
-        passengers[j].day = passengers[j].day/256;
+        if (fread(&passengers[j], 80, 1, p_file)==0) // 1 single fread :D
+        
+            break;
+
+        /*  
+        The 00 in every 80th byte in the binary file killed me, until I eventually figured out how the binary file was storing data (and what the book was saying).
+        No, seriously, I had written a function that would swap the last 2 and first 2 bytes of a 4 byte data type to get the right numbers
+        It worked, but bugged me that I even had to do such a thing at my level, given that we haven't learnt about this stuff before
+        (I did because I learnt it from reading Super Mario 64's source code)
+        Eventually I realized that the book, when it said a type 'long' was 4 bytes on page 47, it was reffering to a microcomputer... 
+        A long is 8 bytes.
+        Duh.
+        */
+
+
+        // Ensure string termination
+
+        passengers[j].name[50] = '\0';
+        passengers[j].orig[10] = '\0';
+        passengers[j].dest[10] = '\0';
+
 
         // Line per line safety check, just like in store_text()
 
@@ -224,6 +245,7 @@ int store_binary(PASSENGER *passengers, char *filename)
                 printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, temp_filename);
             else
                 printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, filename);
+            
             __fpurge(stdin);
 
             while(1)
@@ -237,6 +259,7 @@ int store_binary(PASSENGER *passengers, char *filename)
 
         j++;
     }
+
     fclose(p_file);
 
     if (succesful_firstread == 0 || filename == NULL)
