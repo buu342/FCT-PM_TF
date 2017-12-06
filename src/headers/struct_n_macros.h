@@ -11,7 +11,7 @@
 
 typedef struct Passenger
 {
-    unsigned short int id;
+    unsigned int id;
     char name[51];
     char orig[11];
     char dest[11];
