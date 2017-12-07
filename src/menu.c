@@ -15,7 +15,7 @@
 #include "headers/store.h"
 #include "headers/list.h"
 #include "headers/gera.h"
-#include "headers/econ.h"
+#include "headers/analysis.h"
 #include "headers/menu.h"
 
 
@@ -111,7 +111,7 @@ void menu(PASSENGER *passengers)
                     break;
                 case '5':
                     if (database_loaded == 1)
-                        write_textfile(passengers);
+                        write_textfile(passengers,0);
                     else    
                         printf(cr_red "É necessário ler um ficheiro de texto ou binário antes de correr esta ação.\n\n" cr_reset);
                     press_enter();
