@@ -1,9 +1,15 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*                                                                           REWRITE THE FILENAME CHECK WITH STRCPY                                                                           */
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 /*--------------------------------------------------------------
                     Standard C Libraries
 --------------------------------------------------------------*/
 
 #include <stdio.h>      // For use of literally everything (Thanks Mike Lesk!)
-#include <stdlib.h>     // For use of the exit and system functions
 #include <stdio_ext.h>  // For use of the __fpurge function
 
 
@@ -13,6 +19,30 @@
 
 #include "headers/struct_n_macros.h"
 #include "headers/store.h"
+
+
+/*--------------------------------------------------------------
+                        error_function
+            Shows that your file is invalid.
+--------------------------------------------------------------*/
+
+int error_function(int succesful_firstread, char *filename, char *temp_filename)
+{
+    char c;
+    if (succesful_firstread == 0 || filename == NULL)
+        printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, temp_filename);
+    else
+        printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, filename);
+    __fpurge(stdin);
+
+    while(1)
+    {
+        c = getchar();
+        if (c == '\n')
+            break;
+    }
+    return 0; // Return failure
+}
 
 
 /*--------------------------------------------------------------
@@ -70,88 +100,59 @@ int store_text(PASSENGER *passengers, char *filename)
         passengers[j].day = 0;
     }
 
-    j = i = 0; // Reset i and j to prevent line reading mistakes.
+    j = 0; // Reset j to prevent line reading mistakes.
 
-    fseek(p_file, 0, SEEK_SET); // Jump back to the beggining of the file. 
+    fseek(p_file, 0, SEEK_SET); // Jump back to the beginning of the file. 
 
-    while((c=getc(p_file))) // Extra parenthesis or -Wall would complain
+    while(fscanf(p_file,"%d%51c%11c%11c%hi\n",&passengers[j].id, passengers[j].name, passengers[j].orig, passengers[j].dest, &passengers[j].day)==5)
     {
-        i++;
-        if (c == EOF ) // Stop once we hit rock bottom.
-            break;
-
-        if (c == '\n')
-        {
-
-            // Check if it's a database file. There's many ways to do this and neither is 100% fool proof.
-            // But this seems to work, as long as the first 5 characters of every line of a text file are not populated by 
-            // anything smaller than line feeds (10 on the ASCII table), which is unlikely unless
-            // the file it's reading has JUST THE RIGHT 5 Characters (or less) in it per line.
-            // But who writes 5 character text documents anyway?
-            if (i == 81 && (passengers[j].id < 99999 && passengers[j].id > 10000)) // This is to make sure it's a correct database file.
-            {
-                j++;
-                i = 0;
-                continue;
-            }
-            else
-            {
-                if (succesful_firstread == 0 || filename == NULL)
-                    printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, temp_filename);
-                else
-                    printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, filename);
-                __fpurge(stdin);
-
-                while(1)
-                {
-                    c = getchar();
-                    if (c == '\n')
-                        break;
-                }
-                return 0; // Return failure
-            }
-        }
-
-
-        // Store the data
-
-        if (i<=5)
-            passengers[j].id = c-'0' + passengers[j].id*10;
-        else if (i <= 56)
-            passengers[j].name[i-6] = c;
-        else if (i <= 67)
-            passengers[j].orig[i-57] = c;
-        else if (i <= 78)
-            passengers[j].dest[i-68] = c;
-        else if (c != ' ')
-            passengers[j].day = c-'0' + passengers[j].day*10;
-
 
         // Ensure string termination
 
         passengers[j].name[50] = '\0';
         passengers[j].orig[10] = '\0';
         passengers[j].dest[10] = '\0';
+
+        // Check if it's a database file. There's many ways to do this and neither is 100% fool proof.
+        // But this seems to work, as long as the first 5 characters of every line of a text file are not populated by 
+        // anything smaller than line feeds (10 on the ASCII table), which is unlikely unless
+        // the file it's reading has JUST THE RIGHT 5 Characters (or less) in it per line.
+        // But who writes 5 character text documents anyway?
+        if ((passengers[j].id < 99999 && passengers[j].id > 10000)) // This is to make sure it's a correct database file.
+        {
+            j++;
+            continue;
+        }
+        else
+            return error_function(succesful_firstread, filename, temp_filename); // Return failure (0)
+
     }
     fclose(p_file);
 
-    if (succesful_firstread == 0 || filename == NULL)
-        printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_reset, temp_filename);
-    else
-        printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_reset, filename);
+    // Use the last value of j for one last safety check.
 
-    printf(cr_magenta "Prima Enter para continuar." cr_reset);
-    i = 0;
-    while (1)
+    if ((passengers[0].id < 99999 && passengers[0].id > 10000) && (passengers[j-1].id < 99999 && passengers[j-1].id > 10000))
     {
-        
-        c = getchar();
-        if (c == '\n' && (filename != NULL || i > 0))
-            break;
+        if (succesful_firstread == 0 || filename == NULL)
+            printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_reset, temp_filename);
         else
-            i++;
+            printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_reset, filename);
+
+        printf(cr_magenta "Prima Enter para continuar." cr_reset);
+        i = 0;
+        while (1)
+        {
+            
+            c = getchar();
+            if (c == '\n' && (filename != NULL || i > 0))
+                break;
+            else
+                i++;
+        }
+        return 1; // Return success
     }
-    return 1; // Return success
+    else
+        return error_function(succesful_firstread, filename, temp_filename); // Return failure (0)
 }
 
 
@@ -209,25 +210,26 @@ int store_binary(PASSENGER *passengers, char *filename)
             passengers[j].dest[i] = '\0';
         passengers[j].day = 0;
     }
-    j = i = 0; // Reset i and j to prevent line reading mistakes.
+    j = 0; // Reset j to prevent line reading mistakes.
 
     while(1)
     {
         // Store the data
 
-        if (fread(&passengers[j], 80, 1, p_file)==0) // 1 single fread :D
-        
-            break;
-
         /*  
         The 00 in every 80th byte in the binary file killed me, until I eventually figured out how the binary file was storing data (and what the book was saying).
+        Things got worse when I hex edited the binary file and thought, because I have an intel machine, it was reading the data in little-endian format (reading
+        44cd0000 instead of 0000cd44.  
         No, seriously, I had written a function that would swap the last 2 and first 2 bytes of a 4 byte data type to get the right numbers
-        It worked, but bugged me that I even had to do such a thing at my level, given that we haven't learnt about this stuff before
-        (I did because I learnt it from reading Super Mario 64's source code)
-        Eventually I realized that the book, when it said a type 'long' was 4 bytes on page 47, it was reffering to a microcomputer... 
+        It worked, but bugged me that I even had to do such a thing at my level, given that we haven't learnt about this stuff before.
+        Eventually I realized that the book, when it said a type 'long' was 4 bytes on page 47, it was referring to a microcomputer... 
         A long is 8 bytes.
-        Duh.
+        Duh. (In hindsight, this is why people use <stdint.h>).
+        Álso, why do I always complicate everything?
         */
+
+        if (fread(&passengers[j], 80, 1, p_file)==0) // 1 single fread :D
+            break;
 
 
         // Ensure string termination
@@ -240,22 +242,8 @@ int store_binary(PASSENGER *passengers, char *filename)
         // Line per line safety check, just like in store_text()
 
         if (passengers[j].id > 99999 || passengers[j].id < 10000)
-        {
-            if (succesful_firstread == 0 || filename == NULL)
-                printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, temp_filename);
-            else
-                printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, filename);
-            
-            __fpurge(stdin);
 
-            while(1)
-            {
-                c = getchar();
-                if (c == '\n')
-                    break;
-            }
-            return 0; // Return failure
-        }
+            return error_function(succesful_firstread, filename, temp_filename); // Return failure (0)
 
         j++;
     }
