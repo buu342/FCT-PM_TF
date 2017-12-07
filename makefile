@@ -1,7 +1,11 @@
 ############################ Sexy Makefile ##############################
 ####################### Now with 30% more colors! #######################
 
-all: start_make make_gest clean_o
+ask: .
+	@clear
+	@/bin/echo -e "\x1b[31mWhat do you want made?\nTry \x1b[36m'make gest'\x1b[31m or \x1b[36m'make gera'\x1b[31m.\x1b[0m\n"
+
+gest: start_make make_gest clean_o
 	@/bin/echo -e "\x1b[32mDone!\x1b[0m\n"
 
 start_make:
@@ -11,7 +15,7 @@ start_make:
 
 ########################### Program Recipie #############################
 
-make_gest: make_main make_menu make_store make_list make_gera make_econ
+make_gest: make_main make_menu make_store make_list make_gera make_analysis
 	@echo Merging .o files
 	@gcc -o gest ./bin/*.o
 
@@ -19,9 +23,9 @@ make_gest: make_main make_menu make_store make_list make_gera make_econ
 ######################### Program Ingredients ###########################
 ### C knows which header files to use, so compile WITH ALL OF THEM 😈 ###
 
-make_main: ./src/main.c ./src/headers/*.h
+make_main: ./src/main_gest.c ./src/headers/*.h
 	@echo Creating main.o
-	@gcc -c ./src/main.c -Wall
+	@gcc -c ./src/main_gest.c -Wall
 	@mv *.o ./bin
 
 make_menu: ./src/menu.c ./src/headers/*.h
@@ -44,9 +48,9 @@ make_gera: ./src/gera.c ./src/headers/*.h
 	@gcc -c ./src/gera.c -Wall
 	@mv *.o ./bin
 
-make_econ: ./src/econ.c ./src/headers/*.h
-	@echo Creating econ.o
-	@gcc -c ./src/econ.c -Wall
+make_analysis: ./src/analysis.c ./src/headers/*.h
+	@echo Creating analysis.o
+	@gcc -c ./src/analysis.c -Wall
 	@mv *.o ./bin
 
 
