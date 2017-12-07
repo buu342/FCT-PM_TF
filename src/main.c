@@ -3,7 +3,7 @@
 --------------------------------------------------------------*/
 
 #include <stdio.h>      // For use of literally everything (Thanks Mike Lesk!)
-#include <stdlib.h>     // For use of the exit functions
+#include <stdlib.h>     // For use of the exit function
 
 
 /*--------------------------------------------------------------
