@@ -3,9 +3,9 @@
 --------------------------------------------------------------*/
 
 #include <stdio.h>      // For use of literally everything (Thanks Mike Lesk!)
-#include <stdlib.h>     // For use of the exit and system functions
+#include <stdlib.h>     // For use of the system function
 #include <stdio_ext.h>  // For use of the __fpurge function
-#include <string.h>     // For use of strcpy and strcmp
+#include <string.h>     // For use of strcmp
 
 
 /*--------------------------------------------------------------
@@ -31,12 +31,12 @@ int list_passengers(PASSENGER *passengers, int day_check, int flight_check)
     char origem_dest[9][2][11]= 
     { 
         {"Lisboa    ", "Amesterdao"},
+        {"Lisboa    ", "Frankfurt "},
+        {"Lisboa    ", "Milao     "},
         {"Amesterdao", "Berlim    "},
         {"Amesterdao", "Bucareste "},
-        {"Lisboa    ", "Frankfurt "},
         {"Frankfurt ", "Varsovia  "},
         {"Frankfurt ", "Bucareste "},
-        {"Lisboa    ", "Milao     "},
         {"Milao     ", "Berlim    "},
         {"Milao     ", "Varsovia  "}
     };
@@ -61,12 +61,12 @@ int list_passengers(PASSENGER *passengers, int day_check, int flight_check)
         
         printf(cr_green "\n    Origem\t\tDestino\n" cr_reset);
         printf(cr_cyan "1" cr_reset " – Lisboa\t\tAmesterdão\n");
-        printf(cr_cyan "2" cr_reset " – Amesterdão\t\tBerlim\n");
-        printf(cr_cyan "3" cr_reset " – Amesterdão\t\tBucareste\n");
-        printf(cr_cyan "4" cr_reset " – Lisboa\t\tFrankfurt\n");
-        printf(cr_cyan "5" cr_reset " – Frankfurt\t\tVarsóvia\n");
-        printf(cr_cyan "6" cr_reset " – Frankfurt\t\tBucareste\n");
-        printf(cr_cyan "7" cr_reset " – Lisboa\t\tMilão\n");
+        printf(cr_cyan "2" cr_reset " – Lisboa\t\tFrankfurt\n");
+        printf(cr_cyan "3" cr_reset " – Lisboa\t\tMilão\n");
+        printf(cr_cyan "4" cr_reset " – Amesterdão\t\tBerlim\n");
+        printf(cr_cyan "5" cr_reset " – Amesterdão\t\tBucareste\n");
+        printf(cr_cyan "6" cr_reset " – Frankfurt\t\tVarsóvia\n");
+        printf(cr_cyan "7" cr_reset " – Frankfurt\t\tBucareste\n");
         printf(cr_cyan "8" cr_reset " – Milão\t\tBerlim\n");
         printf(cr_cyan "9" cr_reset " – Milão\t\tVarsóvia");
         printf(cr_magenta "\n\nIndique o voo que quer ver: " cr_reset);
@@ -169,7 +169,7 @@ void ten_day_table(PASSENGER *passengers)
 
     printf(cr_reset);
 
-    for (i=0;i<9;i++)
+    for (i=0;i<10;i++)
     {
         int day_num = ((day_check+i-1)%30)+1; // Crazy maths to make sure it doesn't display day 30 as 0.
 
@@ -178,11 +178,7 @@ void ten_day_table(PASSENGER *passengers)
         for (j=0;j<9;j++)
         {
             people_count = list_passengers(passengers, day_num, j+1);
-
-            if (people_count > 9)
-                printf("  %d\t", people_count);
-            else
-                printf("   %d\t", people_count);
+            printf("  %2d\t", people_count);
             printf(cr_green "|" cr_reset);
         }
 
