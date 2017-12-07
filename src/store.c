@@ -1,17 +1,10 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*                                                                           REWRITE THE FILENAME CHECK WITH STRCPY                                                                           */
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 /*--------------------------------------------------------------
                     Standard C Libraries
 --------------------------------------------------------------*/
 
 #include <stdio.h>      // For use of literally everything (Thanks Mike Lesk!)
 #include <stdio_ext.h>  // For use of the __fpurge function
-
+#include <string.h>     // For use of the strlen function
 
 /*--------------------------------------------------------------
                 Custom Libraries and macros
@@ -23,16 +16,13 @@
 
 /*--------------------------------------------------------------
                         error_function
-            Shows that your file is invalid.
+          Shows that your file is invalid and return 0
 --------------------------------------------------------------*/
 
-int error_function(int succesful_firstread, char *filename, char *temp_filename)
+int error_function(char *filename)
 {
     char c;
-    if (succesful_firstread == 0 || filename == NULL)
-        printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, temp_filename);
-    else
-        printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, filename);
+    printf(cr_red "Ficheiro '%s' não está no formato correto.\n\n" cr_magenta "Prima Enter para continuar." cr_reset, filename);
     __fpurge(stdin);
 
     while(1)
@@ -50,48 +40,46 @@ int error_function(int succesful_firstread, char *filename, char *temp_filename)
             Retrieves and stores data from a text file
 --------------------------------------------------------------*/
 
-int store_text(PASSENGER *passengers, char *filename)
+int store_text(PASSENGER *passengers, char *argv)
 {
-    char c; // For the "Press enter to continue" messages.
-    char temp_filename[100]; // Safety, in case people provide incorrect file names first time around.
-    int i = 0, j = 0, succesful_firstread = 1;  // succesful_firstread was needed since I couldn't modify the pointer's value. There's probably a nicer way to do this but I'm not sure how now. I'll sleep on it.
-                                                // 'i' will be used for counting characters while j will be used for counting lines.
+    int j=0, i=0;
+    char filename[100];
+    char c;
     FILE *p_file;
 
-    if (filename == NULL)
-        printf(cr_magenta "Escreva o nome do ficheiro a abrir: " cr_reset);
 
-    while (1) // Make sure the file exists. There's two checks, one for when an argument is provided in the command line directly and one for when the function was ran manually via the menu.s
+    // Check if a file was provided, otherwise ask for one until it opens sucessfully.
+
+    if (argv == NULL)
     {
-        if (succesful_firstread == 0 || filename == NULL)
+        printf(cr_magenta "Escreva o nome do ficheiro a abrir: " cr_reset);
+        scanf(" %s", filename);
+    }
+    else if (strlen(argv) > 99)
+        printf(cr_red "O nome do seu ficheiro é demasiado longo." cr_magenta " Tente outro: " cr_reset);
+    else
+        strcpy(filename,argv);
+
+    while(1)
+    {
+        p_file = fopen(filename, "r");
+        if (!p_file)
         {
-            scanf(" %s", temp_filename);
-            p_file = fopen(temp_filename, "r");
-            if (!p_file)
-            {
-                printf(cr_red "Ficheiro '%s' não encontrado." cr_magenta " Tente outro: " cr_reset, temp_filename);
-                __fpurge(stdin);
-            }
-            else
-                break;
+            printf(cr_red "Ficheiro '%s' não encontrado." cr_magenta " Tente outro: " cr_reset, filename);
+            __fpurge(stdin);
+            scanf(" %s", filename);
         }
         else
-        {
-            p_file = fopen(filename, "r");
-            if (!p_file)
-            {
-                printf(cr_red "Ficheiro '%s' não encontrado." cr_magenta " Tente outro: " cr_reset, filename);
-                succesful_firstread = 0;
-            }
-            else
-                break;
-        }
+            break;
     }
 
-    for (j=0;j<6000;j++)    // Wipe the old database
+
+    // Wipe the old database
+
+    for (j=0;j<6000;j++) 
     {
         passengers[j].id = 0;
-        for (i=0;i<51;i++)                      // Because of the way I coded the while below, the last position of the vector will ALWAYS be '\0', so I don't bother to change it.
+        for (i=0;i<51;i++)
             passengers[j].name[i] = '\0';
         for (i=0;i<11;i++)
             passengers[j].orig[i] = '\0';
@@ -100,9 +88,12 @@ int store_text(PASSENGER *passengers, char *filename)
         passengers[j].day = 0;
     }
 
-    j = 0; // Reset j to prevent line reading mistakes.
+    j = i = 0; // Reset i and j to prevent issues.
 
     fseek(p_file, 0, SEEK_SET); // Jump back to the beginning of the file. 
+
+
+    // Store the data
 
     while(fscanf(p_file,"%d%51c%11c%11c%hi\n",&passengers[j].id, passengers[j].name, passengers[j].orig, passengers[j].dest, &passengers[j].day)==5)
     {
@@ -118,33 +109,29 @@ int store_text(PASSENGER *passengers, char *filename)
         // anything smaller than line feeds (10 on the ASCII table), which is unlikely unless
         // the file it's reading has JUST THE RIGHT 5 Characters (or less) in it per line.
         // But who writes 5 character text documents anyway?
-        if ((passengers[j].id < 99999 && passengers[j].id > 10000)) // This is to make sure it's a correct database file.
+        if ((passengers[j].id < 99999 && passengers[j].id > 10000))
         {
             j++;
             continue;
         }
         else
-            return error_function(succesful_firstread, filename, temp_filename); // Return failure (0)
+            return error_function(filename); // Return failure (0)
 
     }
     fclose(p_file);
 
-    // Use the last value of j for one last safety check.
 
-    if ((passengers[0].id < 99999 && passengers[0].id > 10000) && (passengers[j-1].id < 99999 && passengers[j-1].id > 10000))
+    // Tell the user all is good, or error.
+
+    if ((passengers[0].id < 99999 && passengers[0].id > 10000) && (passengers[j-1].id < 99999 && passengers[j-1].id > 10000)) // Final sanity check
     {
-        if (succesful_firstread == 0 || filename == NULL)
-            printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_reset, temp_filename);
-        else
-            printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_reset, filename);
-
+        printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_reset, filename);
         printf(cr_magenta "Prima Enter para continuar." cr_reset);
         i = 0;
         while (1)
         {
-            
             c = getchar();
-            if (c == '\n' && (filename != NULL || i > 0))
+            if (c == '\n' && (argv != NULL || i > 0))
                 break;
             else
                 i++;
@@ -152,7 +139,8 @@ int store_text(PASSENGER *passengers, char *filename)
         return 1; // Return success
     }
     else
-        return error_function(succesful_firstread, filename, temp_filename); // Return failure (0)
+        return error_function(filename); // Return failure (0)
+
 }
 
 
@@ -161,45 +149,43 @@ int store_text(PASSENGER *passengers, char *filename)
         Retrieves and stores data from a binary filex
 --------------------------------------------------------------*/
 
-int store_binary(PASSENGER *passengers, char *filename)
+int store_binary(PASSENGER *passengers, char *argv)
 {
+    int j=0, i=0;
+    char filename[100];
     char c;
-    char temp_filename[100]; // Safety, in case people provide incorrect file names first time around.
-    int j = 0, i = 0, succesful_firstread = 1; // succesful_firstread was needed since I couldn't modify the pointer's value. There's probably a nicer way to do this but I'm not sure how now. I'll sleep on it.
-                                               // 'i' will be used for counting characters while j will be used for counting lines.    
     FILE *p_file;
 
-    if (filename == NULL)
-        printf(cr_magenta "Escreva o nome do ficheiro a abrir: " cr_reset);
 
-    while (1) // Make sure the file exists
+    // Check if a file was provided, otherwise ask for one until it opens sucessfully.
+
+    if (argv == NULL)
     {
-        if (succesful_firstread == 0 || filename == NULL)
+        printf(cr_magenta "Escreva o nome do ficheiro a abrir: " cr_reset);
+        scanf(" %s", filename);
+    }
+    else if (strlen(argv) > 99)
+        printf(cr_red "O nome do seu ficheiro é demasiado longo." cr_magenta " Tente outro: " cr_reset);
+    else
+        strcpy(filename,argv);
+
+    while(1)
+    {
+        p_file = fopen(filename, "rB");
+        if (!p_file)
         {
-            scanf(" %s", temp_filename);
-            p_file = fopen(temp_filename, "rb");
-            if (!p_file)
-            {
-                printf(cr_red "Ficheiro '%s' não encontrado." cr_magenta " Tente outro: " cr_reset, temp_filename);
-                __fpurge(stdin);
-            }
-            else
-                break;
+            printf(cr_red "Ficheiro '%s' não encontrado." cr_magenta " Tente outro: " cr_reset, filename);
+            __fpurge(stdin);
+            scanf(" %s", filename);
         }
         else
-        {
-            p_file = fopen(filename, "rb");
-            if (!p_file)
-            {
-                printf(cr_red "Ficheiro '%s' não encontrado." cr_magenta " Tente outro: " cr_reset, filename);
-                succesful_firstread = 0;
-            }
-            else
-                break;
-        }
+            break;
     }
 
-    for (j=0;j<6000;j++)    // Wipe the old database
+
+    // Wipe the old database
+
+    for (j=0;j<6000;j++)
     {
         passengers[j].id = 0;
         for (i=0;i<51;i++)
@@ -243,30 +229,31 @@ int store_binary(PASSENGER *passengers, char *filename)
 
         if (passengers[j].id > 99999 || passengers[j].id < 10000)
 
-            return error_function(succesful_firstread, filename, temp_filename); // Return failure (0)
+            return error_function(filename); // Return failure (0)
 
         j++;
     }
 
     fclose(p_file);
 
-    if (succesful_firstread == 0 || filename == NULL)
-        printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_reset, temp_filename);
-    else
-        printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_reset, filename);
 
-    printf(cr_magenta "Prima Enter para continuar." cr_reset);
-    j = 0;
-    while (1)
+    // Tell the user all is good, or error.
+
+    if ((passengers[0].id < 99999 && passengers[0].id > 10000) && (passengers[j-1].id < 99999 && passengers[j-1].id > 10000)) // Final sanity check
     {
-        
-        c = getchar();
-        if (c == '\n' && (filename != NULL || j > 0))
-            break;
-        else
-            j++;
+        printf(cr_yellow "Ficheiro '%s' lido e dados guardados na memória.\n\n" cr_reset, filename);
+        printf(cr_magenta "Prima Enter para continuar." cr_reset);
+        i = 0;
+        while (1)
+        {
+            c = getchar();
+            if (c == '\n' && (argv != NULL || i > 0))
+                break;
+            else
+                i++;
+        }
+        return 1; // Return success
     }
-
-
-    return 1; // Return success
+    else
+        return error_function(filename); // Return failure (0)
 }
