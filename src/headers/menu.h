@@ -1,5 +1,5 @@
-#ifndef PMMENU_H_
-#define PMMENU_H_
+#ifndef PMMENU_H
+#define PMMENU_H
 
 void menu(PASSENGER *passengers);
 
