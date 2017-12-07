@@ -16,7 +16,6 @@
 #include "headers/list.h"
 
 
-
 /*--------------------------------------------------------------
                         list_passengers
             Lists passengers of a specific flight
@@ -86,7 +85,8 @@ int list_passengers(PASSENGER *passengers, int day_check, int flight_check)
     for (i=0;i<6000;i++) // First check where in the array the day requested starts
     {
         if (passengers[i].day == day_check)
-            j+=(!strcmp(passengers[i].orig,origem_dest[flight_check-1][0]) && !strcmp(passengers[i].dest,origem_dest[flight_check-1][1])); // If both strings are the same, it'll return 0. Negate 0 to get 1. 1 and 1 is 1, so increments j by 1. Else, increments by 0.
+            // If both strings are the same, it'll return 0. Negate 0 to get 1. 1 and 1 is 1, so increments j by 1. Else, doesn't increment
+            j+=(!strcmp(passengers[i].orig,origem_dest[flight_check-1][0]) && !strcmp(passengers[i].dest,origem_dest[flight_check-1][1])); 
 
         if (j == 1)
             flight_first_line = i;
