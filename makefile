@@ -11,9 +11,9 @@ start_make:
 
 ########################### Program Recipie #############################
 
-make_gest: make_main make_menu make_store make_list
+make_gest: make_main make_menu make_store make_list make_gera make_econ
 	@echo Merging .o files
-	@gcc -o gest main.o menu.o store.o list.o
+	@gcc -o gest ./bin/*.o
 
 
 ######################### Program Ingredients ###########################
@@ -22,25 +22,40 @@ make_gest: make_main make_menu make_store make_list
 make_main: ./src/main.c ./src/headers/*.h
 	@echo Creating main.o
 	@gcc -c ./src/main.c -Wall
+	@mv *.o ./bin
 
 make_menu: ./src/menu.c ./src/headers/*.h
 	@echo Creating menu.o
 	@gcc -c ./src/menu.c -Wall
+	@mv *.o ./bin
 
 make_store: ./src/store.c ./src/headers/*.h
 	@echo Creating store.o
 	@gcc -c ./src/store.c -Wall
+	@mv *.o ./bin
 
 make_list: ./src/list.c ./src/headers/*.h
 	@echo Creating list.o
 	@gcc -c ./src/list.c -Wall
+	@mv *.o ./bin
+
+make_gera: ./src/gera.c ./src/headers/*.h
+	@echo Creating gera.o
+	@gcc -c ./src/gera.c -Wall
+	@mv *.o ./bin
+
+make_econ: ./src/econ.c ./src/headers/*.h
+	@echo Creating econ.o
+	@gcc -c ./src/econ.c -Wall
+	@mv *.o ./bin
+
 
 
 ############################ Cleanup Crew ##############################
 
 clean_o:
 	@/bin/echo -e "Cleaning up .o files\n"
-	@rm -rf *.o
+	@rm -rf ./bin/*.o
 
 clean:
 	@clear
