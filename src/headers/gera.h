@@ -1,6 +1,6 @@
-#ifndef PMGERA_H_
-#define PMGERA_H_
+#ifndef PMGERA_H
+#define PMGERA_H
 
-void write_textfile(PASSENGER *passengers);
+void write_textfile(PASSENGER *passengers, int mode);
 
 #endif
