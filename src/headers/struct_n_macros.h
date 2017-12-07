@@ -1,5 +1,5 @@
-#ifndef PMPASN_H_
-#define PMPASN_H_
+#ifndef PMSTNM_H
+#define PMSTNM_H
 
 #define cr_red     "\x1b[31m"
 #define cr_green   "\x1b[32m"
