@@ -17,11 +17,11 @@
 
 
 /*--------------------------------------------------------------
-                        store_text
-            Retrieves and stores data from a text file
+                       write_textfile
+            Writes the database to a text file.
 --------------------------------------------------------------*/
 
-void write_textfile(PASSENGER *passengers)
+void write_textfile(PASSENGER *passengers, int mode)
 {
     FILE *p_file;
     int i=0;
@@ -35,18 +35,15 @@ void write_textfile(PASSENGER *passengers)
     strcat(filename,name); // Merge the words texts/ and the filename together
 
     if (stat("/texts", &struc) == -1) // Check if the directory exists
-    {
         mkdir("texts", ACCESSPERMS); // if not make it. Permissions to everyone.
-    }
 
     p_file = fopen(filename, "w+");
 
-    for (i=0;i<6000;i++) // Write until no more information.
-        if (passengers[i].id == 0)
-            break;
-        else
+    if (mode == 0) // If in text mode
+    {
+        for (i=0;passengers[i].id!=0;i++) // Write until no more information.
             fprintf(p_file, "%d%s %s %s %2d\n", passengers[i].id, passengers[i].name, passengers[i].orig, passengers[i].dest, passengers[i].day );
-            
+    }
 
     fclose(p_file);
 
