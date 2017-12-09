@@ -21,7 +21,7 @@
             Writes the database to a text file.
 --------------------------------------------------------------*/
 
-void write_textfile(PASSENGER *passengers, int mode)
+void write_file(PASSENGER *passengers, int mode)
 {
     FILE *p_file;
     int i=0;
