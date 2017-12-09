@@ -42,7 +42,7 @@ void write_file(PASSENGER *passengers, int mode)
     if (mode == 0) // If in text mode
     {
         for (i=0;passengers[i].id!=0;i++) // Write until no more information.
-            fprintf(p_file, "%d%s %s %s %2d\n", passengers[i].id, passengers[i].name, passengers[i].orig, passengers[i].dest, passengers[i].day );
+            fprintf(p_file, "%d%s %-10s %-10s %2d\n", passengers[i].id, passengers[i].name, passengers[i].orig, passengers[i].dest, passengers[i].day );
     }
 
     fclose(p_file);
