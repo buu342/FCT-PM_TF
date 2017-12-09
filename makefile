@@ -15,7 +15,7 @@ start_make:
 
 ########################### Program Recipie #############################
 
-make_gest: make_main make_menu make_store make_list make_gera make_analysis
+make_gest: make_main make_menu make_store make_list make_gera make_analysis make_reserve
 	@echo Merging .o files
 	@gcc -o gest ./bin/*.o
 
@@ -51,6 +51,11 @@ make_gera: ./src/gera.c ./src/headers/*.h
 make_analysis: ./src/analysis.c ./src/headers/*.h
 	@echo Creating analysis.o
 	@gcc -c ./src/analysis.c -Wall
+	@mv *.o ./bin
+
+make_reserve: ./src/reserve.c ./src/headers/*.h
+	@echo Creating reserve.o
+	@gcc -c ./src/reserve.c -Wall
 	@mv *.o ./bin
 
 
