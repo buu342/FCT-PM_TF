@@ -95,14 +95,19 @@ int store_text(PASSENGER *passengers, char *argv)
 
     // Store the data
 
-    while(fscanf(p_file,"%d%51c%11c%11c%hi\n",&passengers[j].id, passengers[j].name, passengers[j].orig, passengers[j].dest, &passengers[j].day)==5)
+    while(fscanf(p_file,"%d%51c%11c%11c%hd\n",&passengers[j].id, passengers[j].name, passengers[j].orig, passengers[j].dest, &passengers[j].day)==5)
     {
 
         // Ensure string termination
 
         passengers[j].name[50] = '\0';
-        passengers[j].orig[10] = '\0';
-        passengers[j].dest[10] = '\0';
+
+        for (i=0;i<11;i++)
+            if (passengers[j].orig[i] == ' ')
+                passengers[j].orig[i] = '\0';
+        for (i=0;i<11;i++)
+            if (passengers[j].dest[i] == ' ')
+                passengers[j].dest[i] = '\0';
 
         // Check if it's a database file. There's many ways to do this and neither is 100% fool proof.
         // But this seems to work, as long as the first 5 characters of every line of a text file are not populated by 
@@ -221,8 +226,12 @@ int store_binary(PASSENGER *passengers, char *argv)
         // Ensure string termination
 
         passengers[j].name[50] = '\0';
-        passengers[j].orig[10] = '\0';
-        passengers[j].dest[10] = '\0';
+        for (i=0;i<11;i++)
+            if (passengers[j].orig[i] == ' ')
+                passengers[j].orig[i] = '\0';
+        for (i=0;i<11;i++)
+            if (passengers[j].dest[i] == ' ')
+                passengers[j].dest[i] = '\0';
 
 
         // Line per line safety check, just like in store_text()
