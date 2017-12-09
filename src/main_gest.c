@@ -42,31 +42,28 @@ int main(int argc, char *argv[])
 
     if (argc > 1) // Check if there's something in front of the program name. If not, open the menu instantly
     {
-        if (argv[1][0] == '-') // Check if the user has given a command. If not, treat it as a filename.
+        if (argv[1][0] == '-' && argv[1][2] == '\0') // Check if the user has given a command. If not, treat it as a filename.
         {
-            if (argv[1][2] == '\0')
+            switch(argv[1][1]) // Choose what to do given on what's in front of the hyphen. 
             {
-                switch(argv[1][1]) // Choose what to do given on what's in front of the hyphen. 
-                {
-                    case 'b':
-                        if (argc == 3) // Make sure only 2 arguments have been provided, otherwise complain
-                        {
-                            store_binary(passengers, argv[2]);
-                            menu(passengers);
-                        }
-                        break;
-                    case 'h':
-                        if (argc == 2) // Make sure only 1 argument was provided, otherwise complain
-                        {
-                            printf(cr_yellow "\nCommandos:\n\n" cr_reset);
-                            printf(cr_yellow "\t%s \t\t\t\tAbrir o programa normalmente.\n" cr_reset, argv[0]);
-                            printf(cr_yellow "\t%s ficheiro_texto\t\tAbrir diretamente um ficheiro texto.\n" cr_reset, argv[0]);
-                            printf(cr_yellow "\t%s -b ficheiro_binário\tAbrir diretamente um ficheiro binário.\n" cr_reset, argv[0]);
-                            printf(cr_yellow "\t%s -h \t\t\tVer esta informação.\n\n" cr_reset, argv[0]);
-                            exit(0);
-                        }
-                        break;
-                }
+                case 'b':
+                    if (argc == 3) // Make sure only 2 arguments have been provided, otherwise complain
+                    {
+                        store_binary(passengers, argv[2]);
+                        menu(passengers);
+                    }
+                    break;
+                case 'h':
+                    if (argc == 2) // Make sure only 1 argument was provided, otherwise complain
+                    {
+                        printf(cr_yellow "\nCommandos:\n\n" cr_reset);
+                        printf(cr_yellow "\t%s \t\t\t\tAbrir o programa normalmente.\n" cr_reset, argv[0]);
+                        printf(cr_yellow "\t%s ficheiro_texto\t\tAbrir diretamente um ficheiro texto.\n" cr_reset, argv[0]);
+                        printf(cr_yellow "\t%s -b ficheiro_binário\tAbrir diretamente um ficheiro binário.\n" cr_reset, argv[0]);
+                        printf(cr_yellow "\t%s -h \t\t\tVer esta informação.\n\n" cr_reset, argv[0]);
+                        exit(0);
+                    }
+                    break;
             }
         }
         else
@@ -78,5 +75,5 @@ int main(int argc, char *argv[])
     else
         menu(passengers);
 
-    printf(cr_red "\nComando desconhecido. Experimente '%s -h'\n\n" cr_reset, argv[0]);
+    printf(cr_red "\nComando desconhecido. Use '%s -h' para ver todos os comandos possiveis.\n\n" cr_reset, argv[0]);
 }
