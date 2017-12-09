@@ -82,7 +82,6 @@ void menu(PASSENGER *passengers)
             {
                 case '0':
                     system("clear");
-                    printf("Adeus!\n\n");
                     exit(0);
                     break;
                 case '1':
@@ -95,7 +94,7 @@ void menu(PASSENGER *passengers)
                     break;
                 case '3':
                     if (database_loaded == 1)
-                        list_passengers(passengers, 0, 0);
+                        list_passengers(passengers, 0, 0); // 0, 0 means the function will ask for the user to input what day, flight they want to see.
                     else    
                         printf(cr_red "É necessário ler um ficheiro de texto ou binário antes de correr esta ação.\n\n" cr_reset);
                     press_enter();
@@ -111,7 +110,7 @@ void menu(PASSENGER *passengers)
                     break;
                 case '5':
                     if (database_loaded == 1)
-                        write_textfile(passengers,0);
+                        write_file(passengers,0); // 0 means write the file in text mode
                     else    
                         printf(cr_red "É necessário ler um ficheiro de texto ou binário antes de correr esta ação.\n\n" cr_reset);
                     press_enter();
@@ -126,6 +125,13 @@ void menu(PASSENGER *passengers)
                     doOption = 0;
                     break;
                 case '7':
+                    if (database_loaded == 1)
+                        connecting_flights(passengers);
+                    else    
+                        printf(cr_red "É necessário ler um ficheiro de texto ou binário antes de correr esta ação.\n\n" cr_reset);
+                    press_enter();
+                    doOption = 0;
+                    break;
                 case '8':
                 default:
                     printf(cr_red "Opção inválida." cr_magenta " Tente outra: " cr_reset);
