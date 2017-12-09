@@ -29,15 +29,15 @@ int list_passengers(PASSENGER *passengers, int day_check, int flight_check)
     int flight_first_line=-1, flight_last_line=0; // For knowing which lines to read when printing.
     char origem_dest[9][2][11]= 
     { 
-        {"Lisboa    ", "Amesterdao"},
-        {"Lisboa    ", "Frankfurt "},
-        {"Lisboa    ", "Milao     "},
-        {"Amesterdao", "Berlim    "},
-        {"Amesterdao", "Bucareste "},
-        {"Frankfurt ", "Varsovia  "},
-        {"Frankfurt ", "Bucareste "},
-        {"Milao     ", "Berlim    "},
-        {"Milao     ", "Varsovia  "}
+        {"Lisboa"    , "Amesterdao"},
+        {"Lisboa"    , "Frankfurt" },
+        {"Lisboa"    , "Milao"     },
+        {"Amesterdao", "Berlim"    },
+        {"Amesterdao", "Bucareste" },
+        {"Frankfurt" , "Varsovia"  },
+        {"Frankfurt" , "Bucareste" },
+        {"Milao"     , "Berlim"    },
+        {"Milao"     , "Varsovia"  }
     };
 
     if (day_check == 0 && flight_check == 0) // If the 2nd and 3rd arguments were not provided, it means the function was ran from the menu.
