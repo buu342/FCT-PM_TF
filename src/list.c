@@ -2,7 +2,7 @@
                     Standard C Libraries
 --------------------------------------------------------------*/
 
-#include <stdio.h>      // For use of literally everything (Thanks Mike Lesk!)
+#include <stdio.h>      // For use of everything
 #include <stdlib.h>     // For use of the system function
 #include <stdio_ext.h>  // For use of the __fpurge function
 #include <string.h>     // For use of strcmp
@@ -25,7 +25,7 @@
 int list_passengers(PASSENGER *passengers, int day_check, int flight_check)
 {
     int i=0, j=0;
-    int do_print = 0;
+    int do_print = 0; // If false, the function will only return the amount of passengers in a specific day/flight. Otherwise it'll ask the user for info to search for.
     int flight_first_line=-1, flight_last_line=0; // For knowing which lines to read when printing.
     char origem_dest[9][2][11]= 
     { 
@@ -51,7 +51,7 @@ int list_passengers(PASSENGER *passengers, int day_check, int flight_check)
             scanf(" %i", &day_check);
             if (day_check > 0 && day_check <= 30)
                 break;
-            else // You shall not pass
+            else
             {
                 printf(cr_red "O dia tem que ser um numero entre " cr_cyan "1" cr_red " e " cr_cyan "30" cr_red ". " cr_magenta "Experimente outro: " cr_reset);
                 __fpurge(stdin);
@@ -59,15 +59,8 @@ int list_passengers(PASSENGER *passengers, int day_check, int flight_check)
         }
         
         printf(cr_green "\n    Origem\t\tDestino\n" cr_reset);
-        printf(cr_cyan "1" cr_reset " – Lisboa\t\tAmesterdão\n");
-        printf(cr_cyan "2" cr_reset " – Lisboa\t\tFrankfurt\n");
-        printf(cr_cyan "3" cr_reset " – Lisboa\t\tMilão\n");
-        printf(cr_cyan "4" cr_reset " – Amesterdão\t\tBerlim\n");
-        printf(cr_cyan "5" cr_reset " – Amesterdão\t\tBucareste\n");
-        printf(cr_cyan "6" cr_reset " – Frankfurt\t\tVarsóvia\n");
-        printf(cr_cyan "7" cr_reset " – Frankfurt\t\tBucareste\n");
-        printf(cr_cyan "8" cr_reset " – Milão\t\tBerlim\n");
-        printf(cr_cyan "9" cr_reset " – Milão\t\tVarsóvia");
+        for (i=0;i<9;i++);
+            printf(cr_cyan "1" cr_reset " – %s\t\t%s\n",origem_dest[i][0],origem_dest[i][1]);
         printf(cr_magenta "\n\nIndique o voo que quer ver: " cr_reset);
         while (1) // Only let a number between 1 and 9 pass.
         {
@@ -82,6 +75,8 @@ int list_passengers(PASSENGER *passengers, int day_check, int flight_check)
         }
     }
 
+    // J will be used for the number of passengers found.
+
     for (i=0;i<6000;i++) // First check where in the array the day requested starts
     {
         if (passengers[i].day == day_check)
@@ -92,6 +87,8 @@ int list_passengers(PASSENGER *passengers, int day_check, int flight_check)
             flight_first_line = i;
     }
 
+
+    // Set flight_first_line and flight_last_line according to the value of j (so we can output it). Show a message with the data found
     
     if (j == 0)
     {
