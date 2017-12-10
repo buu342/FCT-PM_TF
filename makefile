@@ -8,22 +8,35 @@ ask: .
 gest: start_make make_gest clean_o
 	@/bin/echo -e "\x1b[32mDone!\x1b[0m\n"
 
+gera: start_make2 make_ger clean_o
+	@/bin/echo -e "\x1b[32mDone!\x1b[0m\n"
+
 start_make:
 	@clear
-	@/bin/echo -e "\x1b[31mStarting gest compiler.\x1b[0m\n"
+	@/bin/echo -e "\x1b[31mStarting Gest compiler.\x1b[0m\n"
+
+start_make2:
+	@clear
+	@/bin/echo -e "\x1b[31mStarting Gera compiler.\x1b[0m\n"
 
 
 ########################### Program Recipie #############################
 
-make_gest: make_main make_menu make_store make_list make_gera make_analysis make_reserve
+make_gest: make_main make_menu make_store make_list make_output make_analysis make_reserve
 	@echo Merging .o files
 	@gcc -o gest ./bin/*.o
+
+make_ger: make_main2 make_gera
+	@echo Merging .o files
+	@gcc -o gera ./bin/*.o
 
 
 ######################### Program Ingredients ###########################
 ### C knows which header files to use, so compile WITH ALL OF THEM 😈 ###
+################################# Gest ##################################
 
 make_main: ./src/main_gest.c ./src/headers/*.h
+	@mkdir -p bin
 	@echo Creating main.o
 	@gcc -c ./src/main_gest.c -Wall
 	@mv *.o ./bin
@@ -43,9 +56,9 @@ make_list: ./src/list.c ./src/headers/*.h
 	@gcc -c ./src/list.c -Wall
 	@mv *.o ./bin
 
-make_gera: ./src/gera.c ./src/headers/*.h
-	@echo Creating gera.o
-	@gcc -c ./src/gera.c -Wall
+make_output: ./src/output.c ./src/headers/*.h
+	@echo Creating output.o
+	@gcc -c ./src/output.c -Wall
 	@mv *.o ./bin
 
 make_analysis: ./src/analysis.c ./src/headers/*.h
@@ -59,6 +72,18 @@ make_reserve: ./src/reserve.c ./src/headers/*.h
 	@mv *.o ./bin
 
 
+################################# Gest ##################################
+
+make_main2: ./src/main_gera.c ./src/headers/*.h
+	@mkdir -p bin
+	@echo Creating main.o
+	@gcc -c ./src/main_gera.c -Wall
+	@mv *.o ./bin
+
+make_gera: ./src/gera.c ./src/headers/*.h
+	@echo Creating gera.o
+	@gcc -c ./src/gera.c -Wall
+	@mv *.o ./bin
 
 ############################ Cleanup Crew ##############################
 
