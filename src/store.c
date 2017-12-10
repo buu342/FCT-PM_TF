@@ -2,9 +2,10 @@
                     Standard C Libraries
 --------------------------------------------------------------*/
 
-#include <stdio.h>      // For use of literally everything (Thanks Mike Lesk!)
+#include <stdio.h>      // For use of everything
 #include <stdio_ext.h>  // For use of the __fpurge function
 #include <string.h>     // For use of the strlen function
+
 
 /*--------------------------------------------------------------
                 Custom Libraries and macros
@@ -207,19 +208,7 @@ int store_binary(PASSENGER *passengers, char *argv)
     {
         // Store the data
 
-        /*  
-        The 00 in every 80th byte in the binary file killed me, until I eventually figured out how the binary file was storing data (and what the book was saying).
-        Things got worse when I hex edited the binary file and thought, because I have an intel machine, it was reading the data in little-endian format (reading
-        44cd0000 instead of 0000cd44.  
-        No, seriously, I had written a function that would swap the last 2 and first 2 bytes of a 4 byte data type to get the right numbers
-        It worked, but bugged me that I even had to do such a thing at my level, given that we haven't learnt about this stuff before.
-        Eventually I realized that the book, when it said a type 'long' was 4 bytes on page 47, it was referring to a microcomputer... 
-        A long is 8 bytes.
-        Duh. (In hindsight, this is why people use <stdint.h>).
-        Álso, why do I always complicate everything?
-        */
-
-        if (fread(&passengers[j], 80, 1, p_file)==0) // 1 single fread :D
+        if (fread(&passengers[j], 80, 1, p_file)==0) // 1 single fread
             break;
 
 
