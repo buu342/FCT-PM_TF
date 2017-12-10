@@ -2,7 +2,7 @@
                     Standard C Libraries
 --------------------------------------------------------------*/
 
-#include <stdio.h>      // For use of literally everything (Thanks Mike Lesk!)
+#include <stdio.h>      // For use of everything
 #include <stdlib.h>     // For use of the exit and system functions
 #include <stdio_ext.h>  // For use of the __fpurge function
 
@@ -14,8 +14,9 @@
 #include "headers/struct_n_macros.h"
 #include "headers/store.h"
 #include "headers/list.h"
-#include "headers/gera.h"
+#include "headers/output.h"
 #include "headers/analysis.h"
+#include "headers/reserve.h"
 #include "headers/menu.h"
 
 
@@ -48,7 +49,7 @@ void press_enter()
 void menu(PASSENGER *passengers)
 {
     int doOption;           // Allows us to refresh the menu once a function has been completed
-    char o;                 // To   select a menu option
+    char o;                 // To select a menu option
     int database_loaded;    // To make sure the user has sucessfully loaded a database in the main.
 
     if (passengers[50].id == 0) // If the user loaded a database via ./gest FILE, detect the database is loaded
@@ -85,14 +86,17 @@ void menu(PASSENGER *passengers)
                     exit(0);
                     break;
                 case '1':
+                    __fpurge(stdin);
                     database_loaded = store_text(passengers, NULL); // The NULL will make the function see it has no filename, so it will prompt one from the user
                     doOption = 0;
                     break;
                 case '2':
+                    __fpurge(stdin);
                     database_loaded = store_binary(passengers, NULL);
                     doOption = 0;
                     break;
                 case '3':
+                    __fpurge(stdin);
                     if (database_loaded == 1)
                         list_passengers(passengers, 0, 0); // 0, 0 means the function will ask for the user to input what day, flight they want to see.
                     else    
@@ -101,6 +105,7 @@ void menu(PASSENGER *passengers)
                     doOption = 0;
                     break;
                 case '4':
+                    __fpurge(stdin);
                     if (database_loaded == 1)
                         ten_day_table(passengers);
                     else    
@@ -109,14 +114,16 @@ void menu(PASSENGER *passengers)
                     doOption = 0;
                     break;
                 case '5':
+                    __fpurge(stdin);
                     if (database_loaded == 1)
-                        write_file(passengers,0); // 0 means write the file in text mode
+                        write_file(passengers);
                     else    
                         printf(cr_red "É necessário ler um ficheiro de texto ou binário antes de correr esta ação.\n\n" cr_reset);
                     press_enter();
                     doOption = 0;
                     break;
                 case '6':
+                    __fpurge(stdin);
                     if (database_loaded == 1)
                         economic_analysis(passengers);
                     else    
@@ -125,6 +132,7 @@ void menu(PASSENGER *passengers)
                     doOption = 0;
                     break;
                 case '7':
+                    __fpurge(stdin);
                     if (database_loaded == 1)
                         connecting_flights(passengers);
                     else    
@@ -133,6 +141,13 @@ void menu(PASSENGER *passengers)
                     doOption = 0;
                     break;
                 case '8':
+                    __fpurge(stdin);
+                    if (database_loaded == 1)
+                        reserve(passengers);
+                    else    
+                        printf(cr_red "É necessário ler um ficheiro de texto ou binário antes de correr esta ação.\n\n" cr_reset);
+                    doOption = 0;
+                    break;
                 default:
                     printf(cr_red "Opção inválida." cr_magenta " Tente outra: " cr_reset);
                     __fpurge(stdin);
