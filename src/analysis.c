@@ -2,7 +2,7 @@
                     Standard C Libraries
 --------------------------------------------------------------*/
 
-#include <stdio.h>      // For use of literally everything (Thanks Mike Lesk!)
+#include <stdio.h>      // For use of everything
 #include <stdlib.h>     // For use of the system function
 #include <stdio_ext.h>  // For use of the __fpurge function
 #include <string.h>     // For use of strcmp
@@ -68,7 +68,7 @@ void economic_analysis(PASSENGER *passengers)
         if (k == 7)
             printf(cr_green "Grupo %d ( cheio )  {" cr_reset "%3d" cr_green "}  |" cr_reset, k+1, group[k]);
         else
-            printf(cr_green "Grupo %d (%2d - %2d)  {" cr_reset "%3d" cr_green "}  |" cr_reset, k+1, k*3, k*3+2, group[k]);
+            printf(cr_green "Grupo %d (%2d – %2d)  {" cr_reset "%3d" cr_green "}  |" cr_reset, k+1, k*3, k*3+2, group[k]);
 
         for(i=0;i<30*(((double)group[k])/largest);i++) // Floor the decimal places.
             putchar('*');
@@ -78,6 +78,11 @@ void economic_analysis(PASSENGER *passengers)
     putchar('\n');
 }
 
+
+/*--------------------------------------------------------------
+                    connecting_flights
+        Shows who is traveling via a connected flight
+--------------------------------------------------------------*/
 
 void connecting_flights(PASSENGER *passengers)
 {
@@ -98,6 +103,9 @@ void connecting_flights(PASSENGER *passengers)
         {"Milao"     , "Varsovia"  }
     };
 
+
+    // Ask the user to input the day he wishes to check
+
     printf(cr_magenta "Indique o dia que quer ver: " cr_reset);
     while (1) // Only let a number between 1 and 30 pass.
     {
@@ -111,6 +119,9 @@ void connecting_flights(PASSENGER *passengers)
         }
     }
 
+
+    // Ask for which flight to check.
+
     printf(cr_green "\n    Origem\t\tDestino\n" cr_reset);
     printf(cr_cyan "1" cr_reset " – Lisboa\t\tAmesterdão\n");
     printf(cr_cyan "2" cr_reset " – Lisboa\t\tFrankfurt\n");
@@ -123,10 +134,13 @@ void connecting_flights(PASSENGER *passengers)
             break;
         else
         {
-            printf(cr_red "O dia tem que ser um numero entre " cr_cyan "1" cr_red " e " cr_cyan "3" cr_red ". " cr_magenta "Experimente outro: " cr_reset);
+            printf(cr_red "O voo tem que ser um numero entre " cr_cyan "1" cr_red " e " cr_cyan "3" cr_red ". " cr_magenta "Experimente outro: " cr_reset);
             __fpurge(stdin);
         }
     }
+
+
+    // Fill the ids array with the id's found in the specified flight and day
 
     for (i=0;i<6000;i++)
     {
@@ -142,6 +156,9 @@ void connecting_flights(PASSENGER *passengers)
     system("clear");
     printf(cr_green "\t\t\t\t\t\t\t     Origem\t   Escala\t  Destino\n" cr_reset);
 
+
+    // Now check if anyone in a connecting flight ALSO has their ID in the ids array, and if so print their data.
+
     for (i=0;ids[i]!=0;i++) // Cycle through all the id's in our array
     {
         for (j=0;j<6000;j++) // Cycle through all the flights and find one where an id in our array matches someone going to another flight
@@ -150,9 +167,9 @@ void connecting_flights(PASSENGER *passengers)
                 continue;
 
             if ((!strcmp(passengers[j].orig,origem_dest[flight_check*2+1][0]) && !strcmp(passengers[j].dest,origem_dest[flight_check*2+1][1])) && k == 0)
-                printf(cr_green "%2d - %d" cr_reset " %sLisboa\t   %s\t  %s\n",++l , passengers[j].id, passengers[j].name, origem_dest[flight_check-1][1], origem_dest[flight_check*2+1][1]);
+                printf(cr_green "%2d – %d" cr_reset " %sLisboa\t   %s\t  %s\n",++l , passengers[j].id, passengers[j].name, origem_dest[flight_check-1][1], origem_dest[flight_check*2+1][1]);
             else if ((!strcmp(passengers[j].orig,origem_dest[flight_check*2+2][0]) && !strcmp(passengers[j].dest,origem_dest[flight_check*2+2][1])) && k == 1)
-                printf(cr_green "%2d - %d" cr_reset " %sLisboa\t   %s\t  %s\n",++l, passengers[j].id, passengers[j].name, origem_dest[flight_check-1][1], origem_dest[flight_check*2+2][1]);
+                printf(cr_green "%2d – %d" cr_reset " %sLisboa\t   %s\t  %s\n",++l, passengers[j].id, passengers[j].name, origem_dest[flight_check-1][1], origem_dest[flight_check*2+2][1]);
         }
         if (k == 0 && ids[i+1]==0)
         {
