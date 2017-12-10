@@ -8,12 +8,13 @@
 
 /*--------------------------------------------------------------
                         Custom Libraries
- Apparently C supports ANSI escape sequences. Time to abuse :D
+ Apparently C supports ANSI escape sequences. That means I can
+                       make colored text!
 --------------------------------------------------------------*/
 
-#include "headers/struct_n_macros.h"    // Contains our struct and some macros, such as colors :D
+#include "headers/struct_n_macros.h"    // Contains our struct and some macros, such as colors
 #include "headers/menu.h"               // Menu
-#include "headers/store.h"              // Storing functions
+#include "headers/store.h"              // Storing functions, for reading the files provided as arguments
 
 
 /*--------------------------------------------------------------
@@ -25,13 +26,12 @@ green   - For Titles
 cyan    - For usable options
 magenta - Awaiting user input
 yellow  - Task completed
-
-I'm using cr_* because of my Game Maker habits.
 --------------------------------------------------------------*/
 
 
 /*--------------------------------------------------------------
                             Main
+        Check for arguments and call necessary functions.
 --------------------------------------------------------------*/
 
 int main(int argc, char *argv[])
